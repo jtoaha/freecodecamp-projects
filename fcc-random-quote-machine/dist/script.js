@@ -30,7 +30,7 @@ class QuoteBox extends React.Component {
     <button type="submit" onClick={this.handleClick} id="new-quote"> New Quote </button>
 
 
-    <a href="https://twitter.com/intent/tweet" className="twitter-share-button" data-text={`"${currentQuote.text}" –${currentQuote.author}`} data-show-count="false" data-size="large" data-url=" "></a>
+    <a href="https://twitter.com/intent/tweet"  data-text={`"${currentQuote.text}" –${currentQuote.author}`} data-show-count="false" data-size="large" data-url=" "><i className="fa fa-twitter"></i> </a>
       </div>
     );
   }
