@@ -1,0 +1,29 @@
+body{
+  font-family: 'Courier';
+}
+
+#quote-machine{
+  margin: 20%;
+}
+
+#quote-area{
+  height: 30vh;
+}
+
+#text{
+  text-align: justify;
+}
+
+#author{
+text-align: right;
+}
+
+.btn-custom{
+  background-color: #00acee;
+}
+
+#button-section{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

@@ -1,3 +1,5 @@
+/*This Random Quote Machine is made using React, Bootstrap, and custom CSS*/
+
 class QuoteBox extends React.Component {
   constructor(props) {
     super(props)
@@ -22,26 +24,30 @@ class QuoteBox extends React.Component {
   render() {
     let currentQuote = this.state.currentQuote
     return (
-      <div>
-        <h1>Quote Machine</h1>
+      <div id="quote-machine">
+        <div id='quote-area'>
         <h3 id='text'>{currentQuote.text}</h3>
         <h4 id='author'>–{currentQuote.author}</h4>
+        </div>
+       <div id="button-section">
+        <button className="btn btn-primary" type='submit' onClick={this.handleClick} id='new-quote'>
+          {' '}
+          New Quote{' '}
+        </button>
         <a href='https://twitter.com/intent/tweet' id='tweet-quote'/>
+        <button className="btn btn-custom">
         <a
           href='https://twitter.com/intent/tweet'
           className='twitter-share-button'
           data-text={`"${currentQuote.text}" –${currentQuote.author}`}
           data-show-count='false'
-          data-size='large'
           data-url=' '
           id='tweet-quote'
         >
-          <i className='fa fa-twitter'></i>
+          {/* <i className='fa fa-twitter'></i> */}
         </a>
-        <button type='submit' onClick={this.handleClick} id='new-quote'>
-          {' '}
-          New Quote{' '}
         </button>
+        </div>
       </div>
     )
   }
