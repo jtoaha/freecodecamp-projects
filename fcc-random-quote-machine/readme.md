@@ -3,7 +3,7 @@
 A Pen created on CodePen.io. Original URL: [https://codepen.io/jtoaha/pen/XWmvpVy](https://codepen.io/jtoaha/pen/XWmvpVy).
 
 
-A Random Quote Generator built using React, Bootstrap, and VanillaC SS.
+A Random Quote Generator built using React, Bootstrap, and Vanilla CSS.
 
 One of the projects built as part of the Free Code Camp Front End Libraries track.
 
