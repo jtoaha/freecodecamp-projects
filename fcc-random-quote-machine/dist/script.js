@@ -1,4 +1,4 @@
-/*This Random Quote Machine is made using React, Bootstrap, and custom CSS*/
+/*This Random Quote Machine is made using React, Bootstrap, and custom CSS. CodePen: https://codepen.io/jtoaha/pen/XWmvpVy?editors=0110*/
 
 class QuoteBox extends React.Component {
   constructor(props) {
@@ -8,6 +8,10 @@ class QuoteBox extends React.Component {
     this.state = {
       currentQuote: this.props.quotes[this.randomQuoteIndex],
     }
+
+    this.mystyle = {
+      color: colors[this.randomQuoteIndex % 14],
+    }
   }
 
   handleClick() {
@@ -15,38 +19,44 @@ class QuoteBox extends React.Component {
     this.setState({
       currentQuote: this.props.quotes[this.randomQuoteIndex],
     })
+    this.mystyle = {
+      color: colors[this.randomQuoteIndex % 7],
+    }
   }
-
-  // componentDidMount() {
-  //   window.twttr.widgets.load()
-  // }
 
   render() {
     let currentQuote = this.state.currentQuote
     return (
-      <div id="quote-machine">
-        <div id='quote-area'>
-        <h3 id='text'>{currentQuote.text}</h3>
-        <h4 id='author'>–{currentQuote.author}</h4>
+      <div id='quote-machine'>
+        <div className='transition-custom' id='quote-area'>
+          <h3 style={this.mystyle} id='text'>
+            "{currentQuote.text}"
+          </h3>
+          <h4 id='author'>–{currentQuote.author}</h4>
         </div>
-       <div id="button-section">
-        <button className="btn btn-primary" type='submit' onClick={this.handleClick} id='new-quote'>
-          {' '}
-          New Quote{' '}
-        </button>
-        <a href='https://twitter.com/intent/tweet' id='tweet-quote'/>
-        <button className="btn btn-custom">
-        <a
-          href='https://twitter.com/intent/tweet'
-          className='twitter-share-button'
-          data-text={`"${currentQuote.text}" –${currentQuote.author}`}
-          data-show-count='false'
-          data-url=' '
-          id='tweet-quote'
-        >
-          {/* <i className='fa fa-twitter'></i> */}
-        </a>
-        </button>
+        <div id='button-section'>
+          <button
+            className='btn btn-primary'
+            type='submit'
+            onClick={this.handleClick}
+            id='new-quote'
+          >
+            {' '}
+            New Quote{' '}
+          </button>
+          <a href='https://twitter.com/intent/tweet' id='tweet-quote' />
+          <button className='btn btn-custom'>
+            <a
+              href='https://twitter.com/intent/tweet'
+              className='twitter-share-button'
+              data-text={`"${currentQuote.text}" –${currentQuote.author}`}
+              data-show-count='false'
+              data-url=' '
+              id='tweet-quote'
+            >
+              {/* <i className='fa fa-twitter'></i> */}
+            </a>
+          </button>
         </div>
       </div>
     )
@@ -144,6 +154,23 @@ let quotes = [
     text: 'The best way to predict the future is to invent it.',
     author: 'Alan Kay',
   },
+]
+
+let colors = [
+  '#d291bc',
+  '#679b9b',
+  '#1b6ca8',
+  '#303960',
+  '#7c3c21',
+  '#ad6989',
+  '#6a097d',
+  '#ffb367',
+  '#708160',
+  '#b49c73',
+  '#035aa6',
+  '#f6d743',
+  '#6886c5',
+  '#ad6989',
 ]
 
 ReactDOM.render(

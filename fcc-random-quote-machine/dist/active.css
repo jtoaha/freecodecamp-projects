@@ -1,13 +1,21 @@
 body{
-  font-family: 'Courier';
+  padding: 1em;
+/*     background-image: url("https://i.ibb.co/KjwkMxp/corner-art.png");
+  background-position: 97% 3%;
+  background-repeat: no-repeat;
+  background-size: 25%;
+  background-color: #00000; */
 }
 
 #quote-machine{
-  margin: 20%;
+  padding: 2em;
+  margin: 10%;
+  margin-top: 20%;
+  color: #679b9b;
 }
 
 #quote-area{
-  height: 30vh;
+  height: 36vh;
 }
 
 #text{
@@ -16,14 +24,20 @@ body{
 
 #author{
 text-align: right;
+  letter-spacing: 1px;
+  color: gray;
 }
 
-.btn-custom{
+/* .btn-custom{
   background-color: #00acee;
-}
+} */
 
 #button-section{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.transition-custom{
+   transition-timing-function: ease-in;
 }
