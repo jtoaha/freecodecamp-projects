@@ -3,16 +3,34 @@ body{
 }
 
 #whole{
+  position:fixed;
   display: flex;
   flex-direction: row;
   height: 100vh;
+  width: 100vw;
 }
 
 #editor-container{
   width: 100%;
   height: 100%;
   padding: .5em;
+  overflow: auto;
 }
+
+#preview-container > h2, #editor-container > h2{
+  width: 100%;
+  text-align: center;
+  letter-spacing: 3px;
+  color: gray;
+}
+
+#preview-container{
+  width: 100%;
+  height: 100%;
+  padding: .5em;
+  overflow: auto;
+}
+
 #editor{
   width: 100%;
   height: 95%;
@@ -21,3 +39,11 @@ body{
 #editor-section, #preview-section {
   width: 50%;
 }
+
+#preview{
+  width: 100%;
+  height: 95%;
+  padding: 1em;
+  background-color: 'white';
+}
+
