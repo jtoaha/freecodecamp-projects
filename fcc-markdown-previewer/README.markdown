@@ -2,7 +2,7 @@
 
 A Pen created on CodePen.io. Original URL: [https://codepen.io/jtoaha/pen/zYrOGqK](https://codepen.io/jtoaha/pen/zYrOGqK).
 
-This Markdown Previewer was built as a project for the Free Code Camp Front End Libraries Track. It is implemented using React, React-Redux, and vanilla CSS. This being a Codepen project, all components had to be placed in one js file.
+This Markdown Previewer was built as a project for the Free Code Camp Front End Libraries Track. It is implemented using React, React-Redux, Marked.js library (parses text to corresponding html format) and vanilla CSS. This being a Codepen project, all components had to be placed in one js file.
 
 Overview of project:
 This project is divided into two sections, which are housed in 2 seperate React components.

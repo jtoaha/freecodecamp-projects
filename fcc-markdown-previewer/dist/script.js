@@ -1,4 +1,4 @@
-/*This Markdown Previewer is made using React, React-Redux, and vanilla CSS. This being a Codepen project. All componets had to be named in one js file. CodePen: https://codepen.io/jtoaha/pen/zYrOGqK/
+/*This Markdown Previewer is made using React, React-Redux, and vanilla CSS. This being a Codepen project. All components had to be named in one js file. CodePen: https://codepen.io/jtoaha/pen/zYrOGqK/
 
 This Markdown Previewer was built as a project for the Free Code Camp Front End Libraries Track. It is implemented using React, React-Redux, Marked.js library (parses text to corresponding html format), and vanilla CSS. This being a Codepen project, all components had to be placed in one js file.
 
