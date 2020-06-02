@@ -13,7 +13,7 @@ body{
   height: 100%;
   padding: .5em;
 }
-#editor-textarea{
+#editor{
   width: 100%;
   height: 95%;
 }
