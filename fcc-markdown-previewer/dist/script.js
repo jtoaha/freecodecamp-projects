@@ -1,5 +1,20 @@
 /*This Markdown Previewer is made using React, React-Redux, and vanilla CSS. This being a Codepen project. All componets had to be named in one js file. CodePen: https://codepen.io/jtoaha/pen/zYrOGqK/
 
+This Markdown Previewer was built as a project for the Free Code Camp Front End Libraries Track. It is implemented using React, React-Redux, and vanilla CSS. This being a Codepen project, all componets had to be placed in one js file.
+
+Overview of project:
+This project is divided into two sections, which are housed in 2 seperate React components.
+- One is the editor section, where users can enter text using Markdown syntax.
+- The second section is the preview section, which shows the resulting formatted text.
+
+Both sections are linked to a single Redux store. So that when the state (user text input in the editor) changes, the preview format is automatically updated as well.
+
+Misc Features: Editor section textarea is autofocused. Vanilla CSS: The 2 sections are placed in scrollable divs in a single fixed container. Minamalist aesthetic.
+
+-jt
+
+*/
+
 //Set parsing settings for marked library
 marked.setOptions({
   breaks: true,
