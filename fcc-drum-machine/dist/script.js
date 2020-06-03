@@ -29,15 +29,15 @@ INSTRUCTIONS:
 var test;
 
 const soundFiles = [
-  {id: 'Q', url: 'https://www.dropbox.com/s/vbevt8aicdavbop/Bigbeat_-Mach_New-7662_hifi.mp3', description: 'Bigbeat Mach New 7662 hifi'},
-  {id: 'W', url: 'https://www.dropbox.com/s/zu0a5u08exhi9kx/Dull_Dru-Public_D-260_hifi.mp3', description: 'Dull Dru Public D-260 hifi'},
-  {id: 'E', url: 'https://www.dropbox.com/s/nl4ysdskgqoborl/idg_Bass-intermed-2205_hifi.mp3?dl=0', description: 'IDG Bass Intermed 2205 hifi'},
-  {id: 'A', url: 'https://www.dropbox.com/s/739t4lt2zaddm9a/idg_bong-intermed-1682_hifi.mp3?dl=0', description: 'IDG Bong Intermed 1682 hifi'},
-  {id: 'S', url: 'https://www.dropbox.com/s/58qp6j5r1okekoo/idg_HipH-intermed-1982_hifi.mp3?dl=0', description: 'IDG HipH Intermed 1982 hifi'},
-  {id: 'D', url: 'https://www.dropbox.com/s/3t5ryrkt5dq26gb/idg_HipH-intermed-2220_hifi.mp3?dl=0', description: 'IDG HipH Intermed 2220 hifi'},
-  {id: 'Z', url: 'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?dl=0', description: 'IDG HipH Intermed 2222 hifi'},
-  {id: 'X',  url: 'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?dl=0', description: 'IDG HipH Intermed 2222 hifi'},
-  {id: 'C',  url: 'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?dl=0', description: 'IDG HipH Intermed 2222 hifi'},
+  {id: 'Q', url: 'https://www.dropbox.com/s/vbevt8aicdavbop/Bigbeat_-Mach_New-7662_hifi.mp3?raw=1', description: 'Bigbeat Mach New 7662 hifi'},
+  {id: 'W', url: 'https://www.dropbox.com/s/zu0a5u08exhi9kx/Dull_Dru-Public_D-260_hifi.mp3?raw=1', description: 'Dull Dru Public D-260 hifi'},
+  {id: 'E', url: 'https://www.dropbox.com/s/nl4ysdskgqoborl/idg_Bass-intermed-2205_hifi.mp3?raw=1', description: 'IDG Bass Intermed 2205 hifi'},
+  {id: 'A', url: 'https://www.dropbox.com/s/739t4lt2zaddm9a/idg_bong-intermed-1682_hifi.mp3?raw=1', description: 'IDG Bong Intermed 1682 hifi'},
+  {id: 'S', url: 'https://www.dropbox.com/s/58qp6j5r1okekoo/idg_HipH-intermed-1982_hifi.mp3?raw=1', description: 'IDG HipH Intermed 1982 hifi'},
+  {id: 'D', url: 'https://www.dropbox.com/s/3t5ryrkt5dq26gb/idg_HipH-intermed-2220_hifi.mp3?raw=1', description: 'IDG HipH Intermed 2220 hifi'},
+  {id: 'Z', url: 'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?raw=1', description: 'IDG HipH Intermed 2222 hifi'},
+  {id: 'X',  url: 'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?raw=1', description: 'IDG HipH Intermed 2222 hifi'},
+  {id: 'C',  url: 'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?raw=1', description: 'IDG HipH Intermed 2222 hifi'},
 ]
 
 class DrumPad  extends React.Component {
@@ -59,7 +59,12 @@ class DrumPad  extends React.Component {
 
   render() {
     return (
-      <div></div>
+    <div className="drum-pad" id={`sound${this.props.soundFile.id}`}>
+      {this.props.soundFile.id}
+      <audio id={this.props.soundFile.id}className="clip" controls src={this.props.soundFile.url} type="audio/mpeg" >
+
+       </audio>
+    </div>
     )
   }
 }
@@ -67,7 +72,7 @@ class DrumPad  extends React.Component {
 //To display description of the most recent sound byte that was clicked
 const Display = (props) => {
   return(
-    <h2>Placeholder Text</h2>
+    <h2 id="display">Placeholder Text</h2>
   )
 }
 
@@ -92,7 +97,8 @@ class DrumMachine extends React.Component {
     return (
       <span>
       <h1 id="main-title">Drum Machine</h1>
-      <Display />
+      <Display/>
+      {this.props.soundFiles.map(soundFile=><DrumPad key={soundFile.id} soundFile={soundFile}/>)}
       </span>
     )
   }
