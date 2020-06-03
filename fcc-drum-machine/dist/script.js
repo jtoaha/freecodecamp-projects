@@ -1,29 +1,102 @@
 // !! IMPORTANT README:
 
-// You may add additional external JS and CSS as needed to complete the project, however the current external resource MUST remain in place for the tests to work. BABEL must also be left in place. 
+// You may add additional external JS and CSS as needed to complete the project, however the current external resource MUST remain in place for the tests to work. BABEL must also be left in place.
 
 /***********
 INSTRUCTIONS:
-  - Select the project you would 
-    like to complete from the dropdown 
+  - Select the project you would
+    like to complete from the dropdown
     menu.
   - Click the "RUN TESTS" button to
-    run the tests against the blank 
+    run the tests against the blank
     pen.
-  - Click the "TESTS" button to see 
-    the individual test cases. 
+  - Click the "TESTS" button to see
+    the individual test cases.
     (should all be failing at first)
   - Start coding! As you fulfill each
-    test case, you will see them go   
+    test case, you will see them go
     from red to green.
-  - As you start to build out your 
-    project, when tests are failing, 
-    you should get helpful errors 
+  - As you start to build out your
+    project, when tests are failing,
+    you should get helpful errors
     along the way!
     ************/
 
 // PLEASE NOTE: Adding global style rules using the * selector, or by adding rules to body {..} or html {..}, or to all elements within body or html, i.e. h1 {..}, has the potential to pollute the test suite's CSS. Try adding: * { color: red }, for a quick example!
 
-// Once you have read the above messages, you can delete all comments. 
+// Once you have read the above messages, you can delete all comments.
 
 var test;
+
+const soundFiles = [
+  {id: 'Q', url: 'https://www.dropbox.com/s/vbevt8aicdavbop/Bigbeat_-Mach_New-7662_hifi.mp3', description: 'Bigbeat Mach New 7662 hifi'},
+  {id: 'W', url: 'https://www.dropbox.com/s/zu0a5u08exhi9kx/Dull_Dru-Public_D-260_hifi.mp3', description: 'Dull Dru Public D-260 hifi'},
+  {id: 'E', url: 'https://www.dropbox.com/s/nl4ysdskgqoborl/idg_Bass-intermed-2205_hifi.mp3?dl=0', description: 'IDG Bass Intermed 2205 hifi'},
+  {id: 'A', url: 'https://www.dropbox.com/s/739t4lt2zaddm9a/idg_bong-intermed-1682_hifi.mp3?dl=0', description: 'IDG Bong Intermed 1682 hifi'},
+  {id: 'S', url: 'https://www.dropbox.com/s/58qp6j5r1okekoo/idg_HipH-intermed-1982_hifi.mp3?dl=0', description: 'IDG HipH Intermed 1982 hifi'},
+  {id: 'D', url: 'https://www.dropbox.com/s/3t5ryrkt5dq26gb/idg_HipH-intermed-2220_hifi.mp3?dl=0', description: 'IDG HipH Intermed 2220 hifi'},
+  {id: 'Z', url: 'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?dl=0', description: 'IDG HipH Intermed 2222 hifi'},
+  {id: 'X',  url: 'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?dl=0', description: 'IDG HipH Intermed 2222 hifi'},
+  {id: 'C',  url: 'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?dl=0', description: 'IDG HipH Intermed 2222 hifi'},
+]
+
+class DrumPad  extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
+    this.state = {
+    }
+
+  }
+
+  handleChange(event) {
+
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+
+  }
+
+  render() {
+    return (
+      <div></div>
+    )
+  }
+}
+
+//To display description of the most recent sound byte that was clicked
+const Display = (props) => {
+  return(
+    <h2>Placeholder Text</h2>
+  )
+}
+
+class DrumMachine extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
+    this.state = {
+    }
+
+  }
+
+  handleChange(event) {
+
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+
+  }
+
+  render() {
+    return (
+      <span>
+      <h1 id="main-title">Drum Machine</h1>
+      <Display />
+      </span>
+    )
+  }
+}
+
+
+ReactDOM.render(<DrumMachine soundFiles={soundFiles}/>, document.getElementById('drum-machine'))
