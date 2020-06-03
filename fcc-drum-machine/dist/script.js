@@ -94,11 +94,12 @@ const soundFiles = [
   },
 ]
 
+var currentSound = ''
+
 class DrumPad extends React.Component {
   constructor(props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
-    this.state = {}
   }
 
   handleChange(event) {}
@@ -106,14 +107,19 @@ class DrumPad extends React.Component {
   componentDidMount(prevProps, prevState) {
     $(`#sound${this.props.soundFile.id}`).on('click', () => {
       document.getElementById(this.props.soundFile.id).play()
+      currentSound = this.props.soundFile.description
+      this.props.updateCurrentSound(currentSound)
     })
 
     $(`body`).keydown((event) => {
-      var keycode = event.keyCode;
+      var keycode = event.keyCode
       console.log(keycode)
       console.log(event.which)
-      if(keycode == this.props.soundFile.keycodeValue)
-       document.getElementById(this.props.soundFile.id).play()
+      if (keycode == this.props.soundFile.keycodeValue) {
+        document.getElementById(this.props.soundFile.id).play()
+        currentSound = this.props.soundFile.description
+        this.props.updateCurrentSound(currentSound)
+      }
     })
   }
 
@@ -134,27 +140,39 @@ class DrumPad extends React.Component {
 
 //To display description of the most recent sound byte that was clicked
 const Display = (props) => {
-  return <h2 id='display'>Placeholder Text</h2>
+  return <h2 id='display'>Display: {currentSound}</h2>
 }
 
 class DrumMachine extends React.Component {
   constructor(props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
-    this.state = {}
+    this.updateCurrentSound = this.updateCurrentSound.bind(this)
+    this.state = {
+      currentSound: '',
+    }
   }
-
+  updateCurrentSound(val) {
+    this.setState({
+      currentSound: val,
+    })
+  }
   handleChange(event) {}
 
   componentDidUpdate(prevProps, prevState) {}
 
   render() {
+    let currentSound = this.state.currentSound
     return (
       <span>
         <h1 id='main-title'>Drum Machine</h1>
-        <Display />
+        <Display currentSound={currentSound} />
         {this.props.soundFiles.map((soundFile) => (
-          <DrumPad key={soundFile.id} soundFile={soundFile} />
+          <DrumPad
+            updateCurrentSound={this.updateCurrentSound}
+            key={soundFile.id}
+            soundFile={soundFile}
+          />
         ))}
       </span>
     )
