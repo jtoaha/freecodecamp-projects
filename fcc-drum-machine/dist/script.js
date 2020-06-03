@@ -1,33 +1,6 @@
-// !! IMPORTANT README:
-
-// You may add additional external JS and CSS as needed to complete the project, however the current external resource MUST remain in place for the tests to work. BABEL must also be left in place.
-
-/***********
-INSTRUCTIONS:
-  - Select the project you would
-    like to complete from the dropdown
-    menu.
-  - Click the "RUN TESTS" button to
-    run the tests against the blank
-    pen.
-  - Click the "TESTS" button to see
-    the individual test cases.
-    (should all be failing at first)
-  - Start coding! As you fulfill each
-    test case, you will see them go
-    from red to green.
-  - As you start to build out your
-    project, when tests are failing,
-    you should get helpful errors
-    along the way!
-    ************/
-
-// PLEASE NOTE: Adding global style rules using the * selector, or by adding rules to body {..} or html {..}, or to all elements within body or html, i.e. h1 {..}, has the potential to pollute the test suite's CSS. Try adding: * { color: red }, for a quick example!
-
-// Once you have read the above messages, you can delete all comments.
-
-var test
-
+/**
+ *
+ */
 const soundFiles = [
   {
     id: 'Q',
@@ -82,15 +55,15 @@ const soundFiles = [
     id: 'X',
     keycodeValue: '88',
     url:
-      'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?raw=1',
-    description: 'IDG HipH Intermed 2222 hifi',
+      'https://www.dropbox.com/s/2b6ffkgrih966kc/idg_Hi_H-intermed-2300_hifi.mp3?raw=1',
+    description: 'IDG Hi H Intermed 2300 hifi',
   },
   {
     id: 'C',
     keycodeValue: '67',
     url:
-      'https://www.dropbox.com/s/i9smjs55r3cju6x/idg_HipH-intermed-2222_hifi.mp3?raw=1',
-    description: 'IDG HipH Intermed 2222 hifi',
+      'https://www.dropbox.com/s/yok22zzavl1et4u/idg-pian-intermed-1321_hifi.mp3?raw=1',
+    description: 'IDG Pian Intermed 1321 hifi',
   },
 ]
 
