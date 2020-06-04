@@ -7,7 +7,7 @@ I built this Drum Machine as part of the Free Code Camp Front End Libraries Trac
 
 Overview: This Drum Machine project sets up a drum machine user can interact with, either by:
 - Pressing corresponding letter on their keyboard (i.e, 'Q', 'W', 'E', 'A', 'S', 'D', 'Z', 'X', 'C')
-- Or simply pressing a specific button.
+- Or simply clicking on a specific button with their mouse.
 
 Every button corresponds to a different sound effect.
 Notable CSS Effects added: When user presses keyboard or clicks on button, CSS shows feedback by showing the button being pressed in and briefly changing it's background color. Added Flexbox so buttons space out evenly and is responsive across different screen sizes.
