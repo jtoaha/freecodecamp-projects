@@ -1,3 +1,60 @@
 body {
-  background-color: pink;
+  height: 100vh;
+  background-image: repeating-linear-gradient(
+    to bottom right,
+    #a0f5ee,
+    #f9f9f9,
+    #fafa9e
+  );
+
+  font-family: monospace;
+}
+
+.drum-pad {
+  padding: 1em;
+  padding-right: 1.25em;
+  padding-left: 1.25em;
+  margin: 0.5em;
+  border-radius: 50px;
+  box-shadow: 5px 6px;
+  background-color: #ff63b9;
+}
+
+.drum-pad:active {
+  background-color: green;
+  box-shadow: 1px 5px #000;
+  transform: translateY(4px);
+}
+
+/*takes aways button focus outline to make way for animation feedback */
+.drum-pad:focus {
+  outline: 0;
+}
+
+#drum-machine {
+  margin: auto;
+  margin-top: 13%;
+  width: 85%;
+  background-color: rgb(53, 230, 221);
+  padding: 4em;
+  padding-right: 1em;
+  padding-left: 1em;
+  border-radius: 10px;
+  display:flex;
+  flex-direction:row;
+  justify-content: space-evenly;
+
+}
+
+h1,
+h2 {
+  text-align: center;
+}
+
+h1 {
+  font-family: 'arial black';
+  color: rgb(221, 221, 12);
+  font-weight: 950;
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+  letter-spacing: 2px;
 }
