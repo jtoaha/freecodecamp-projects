@@ -59,11 +59,11 @@ class JSCalculator extends React.Component {
       { id: 'nine', keyVal: 9, type: 'number', func: this.concatenateNumbers },
       { id: 'decimal', keyVal: '.', type: 'number', func: this.concatenateNumbers },
       { id: 'clear', keyVal: 'AC', type: 'operator', func: this.clearDisplay },
-      { id: 'divide', keyVal: '/', type: 'operator', func: '' },
-      { id: 'multiply', keyVal: 'x', type: 'operator', func: '' },
-      { id: 'subtract', keyVal: '-', type: 'operator', func: '' },
-      { id: 'add', keyVal: '+', type: 'operator', func: '' },
-      { id: 'equals', keyVal: '=', type: 'operator', func: '' },
+      { id: 'divide', keyVal: '/', type: 'operator', func: this.updateDisplayValue },
+      { id: 'multiply', keyVal: 'x', type: 'operator', func: this.updateDisplayValue },
+      { id: 'subtract', keyVal: '-', type: 'operator', func: this.updateDisplayValue },
+      { id: 'add', keyVal: '+', type: 'operator', func: this.updateDisplayValue },
+      { id: 'equals', keyVal: '=', type: 'operator', func: this.updateDisplayValue },
     ]
   }
   updateDisplayValue(val, func) {
@@ -76,37 +76,37 @@ class JSCalculator extends React.Component {
   concatenateNumbers(val){
     this.setState((prevState) => ({
       overall: '',
-      displayValue: this.helperConcatenateNumbers(prevState, val)
+      displayValue: helperConcatenateNumbers(prevState, val)
     }))
-    this.helperConcatenateNumbers = (prevState) =>{
-      console.log(prevState.displayValue);
-      //This will prevent multiple 0s from being inserted at beginning of string if previous value is already 0  given that current value isn't a decimal.
+    let helperConcatenateNumbers = (prevState) => {
 
       //if the state already has a decimal, do no alterations and return original value
       if(this.state.hasDecimal && val === '.') return this.state.displayValue;
 
       //if the current value is a decimal, update hasDecimal to true to prevent additional decimals
-      if(val === '.') this.setState({hasDecimal: true})
-
-
+      //Prevent multiple 0s from being inserted at beginning of string if previous value is already 0  given that current value isn't a decimal.
       if(prevState.displayValue == '0' && val != '.') return val
       // if(val != '.' && prevState.displayValue.toString().slice(-1) != '.' )
       // return `${prevState.displayValue}${val}`
+      //safe to concatenate otherwise
       else {
         return `${prevState.displayValue}${val}`
       }
 
     }
 
+    if(val === '.') this.setState({hasDecimal: true})
+
   }
 
-  clearDisplay(){
+  clearDisplay(val){
     this.setState({
       overall: '',
       displayValue: 0,
       hasDecimal: false
     })
   }
+
   componentDidUpdate(prevProps, prevState) {}
 
   render() {
