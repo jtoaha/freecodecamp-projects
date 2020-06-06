@@ -6,10 +6,12 @@ const Display = (props) => {
 class CalcButton extends React.Component {
   constructor(props) {
     super(props)
-    this.handleChange = this.handleChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
-  handleChange(event) {}
+  handleClick(event) {
+    this.props.updateDisplayValue(this.props.number.keyVal)
+  }
 
   componentDidMount(prevProps, prevState) {}
 
@@ -19,6 +21,7 @@ class CalcButton extends React.Component {
         ref={(c) => (this.calcButton = c)}
         className={this.props.number.type}
         id={`${this.props.number.id}`}
+        onClick={this.handleClick}
       >
         {this.props.number.keyVal}
       </button>
@@ -30,7 +33,7 @@ class JSCalculator extends React.Component {
   constructor(props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
-    this.updateCurrentSound = this.updateCurrentSound.bind(this)
+    this.updateDisplayValue = this.updateDisplayValue.bind(this)
     this.state = {
       displayValue: ' ',
     }
@@ -55,9 +58,9 @@ class JSCalculator extends React.Component {
       { id: 'equals', keyVal: '=', type: 'operator', func: '' },
     ]
   }
-  updateCurrentSound(val) {
+  updateDisplayValue(val) {
     this.setState({
-      currentSound: val,
+      displayValue: val,
     })
   }
   handleChange(event) {}
@@ -71,7 +74,7 @@ class JSCalculator extends React.Component {
         <div id='grid-container'>
           <Display displayValue={this.state.displayValue} />
           {this.buildNumAndOpsArray.map((number) => (
-            <CalcButton number={number} key={number.id} />
+            <CalcButton number={number} key={number.id} updateDisplayValue={this.updateDisplayValue} />
           ))}
         </div>
       </span>
