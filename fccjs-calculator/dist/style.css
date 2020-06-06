@@ -1,3 +1,8 @@
+@font-face{
+  font-family:'digital-clock-font';
+  src: url('put_the_location_to_your_font.ttf or .otf');
+ }
+
 #js-calculator{
   height: 80vh;
   width: 900px;
@@ -31,3 +36,13 @@
   #add { grid-area: 5 / 7 / 6 / 8; }
   #equals { grid-area: 6 / 7 / 8 / 8; }
   #display { grid-area: 2 / 4 / 3 / 8; }
+
+#display{
+  font-family:'digital-clock-font';
+  background-color: black;
+  padding: .25em;
+  color: white;
+  font: 'Monaco';
+  border-color: black;
+  border-style: solid;
+}
