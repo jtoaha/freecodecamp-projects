@@ -43,6 +43,7 @@ class JSCalculator extends React.Component {
     this.state = {
       overall: '',
       displayValue: '',
+      hasDecimal: false
     }
 
     this.buildNumAndOpsArray = [
@@ -75,14 +76,35 @@ class JSCalculator extends React.Component {
   concatenateNumbers(val){
     this.setState((prevState) => ({
       overall: '',
-      displayValue: `${prevState.displayValue}${val}`
+      displayValue: this.helperConcatenateNumbers(prevState, val)
     }))
+    this.helperConcatenateNumbers = (prevState) =>{
+      console.log(prevState.displayValue);
+      //This will prevent multiple 0s from being inserted at beginning of string if previous value is already 0  given that current value isn't a decimal.
+
+      //if the state already has a decimal, do no alterations and return original value
+      if(this.state.hasDecimal && val === '.') return this.state.displayValue;
+
+      //if the current value is a decimal, update hasDecimal to true to prevent additional decimals
+      if(val === '.') this.setState({hasDecimal: true})
+
+
+      if(prevState.displayValue == '0' && val != '.') return val
+      // if(val != '.' && prevState.displayValue.toString().slice(-1) != '.' )
+      // return `${prevState.displayValue}${val}`
+      else {
+        return `${prevState.displayValue}${val}`
+      }
+
+    }
+
   }
 
   clearDisplay(){
     this.setState({
       overall: '',
-      displayValue: 0
+      displayValue: 0,
+      hasDecimal: false
     })
   }
   componentDidUpdate(prevProps, prevState) {}
