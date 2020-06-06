@@ -1,6 +1,9 @@
+/* eslint-disable react/no-multi-comp  */
+/* eslint-disable react/react-in-jsx-scope */
 //To display description of the most recent sound byte that was clicked
+
 const Display = (props) => {
-  return <h2 id='display'>Display: {props.displayValue}</h2>
+  return <h2 id='display'>{props.displayValue}</h2>
 }
 
 class CalcButton extends React.Component {
@@ -10,7 +13,8 @@ class CalcButton extends React.Component {
   }
 
   handleClick(event) {
-    this.props.updateDisplayValue(this.props.number.keyVal)
+    this.props.number.func(this.props.number.keyVal);
+    //this.props.updateDisplayValue(this.props.number.keyVal, this.props.number.func)
   }
 
   componentDidMount(prevProps, prevState) {}
@@ -34,23 +38,26 @@ class JSCalculator extends React.Component {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.updateDisplayValue = this.updateDisplayValue.bind(this)
+    this.concatenateNumbers = this.concatenateNumbers.bind(this);
+    this.clearDisplay = this.clearDisplay.bind(this);
     this.state = {
-      displayValue: ' ',
+      overall: '',
+      displayValue: '',
     }
 
     this.buildNumAndOpsArray = [
-      { id: 'zero', keyVal: 0, type: 'number', func: '' },
-      { id: 'one', keyVal: 1, type: 'number', func: '' },
-      { id: 'two', keyVal: 2, type: 'number', func: '' },
-      { id: 'three', keyVal: 3, type: 'number', func: '' },
-      { id: 'four', keyVal: 4, type: 'number', func: '' },
-      { id: 'five', keyVal: 5, type: 'number', func: '' },
-      { id: 'six', keyVal: 6, type: 'number', func: '' },
-      { id: 'seven', keyVal: 7, type: 'number', func: '' },
-      { id: 'eight', keyVal: 8, type: 'number', func: '' },
-      { id: 'nine', keyVal: 9, type: 'number', func: '' },
-      { id: 'decimal', keyVal: '.', type: 'number', func: '' },
-      { id: 'clear', keyVal: 'AC', type: 'operator', func: '' },
+      { id: 'zero', keyVal: 0, type: 'number', func: this.concatenateNumbers },
+      { id: 'one', keyVal: 1, type: 'number', func: this.concatenateNumbers },
+      { id: 'two', keyVal: 2, type: 'number', func: this.concatenateNumbers },
+      { id: 'three', keyVal: 3, type: 'number', func: this.concatenateNumbers },
+      { id: 'four', keyVal: 4, type: 'number', func: this.concatenateNumbers },
+      { id: 'five', keyVal: 5, type: 'number', func: this.concatenateNumbers },
+      { id: 'six', keyVal: 6, type: 'number', func: this.concatenateNumbers },
+      { id: 'seven', keyVal: 7, type: 'number', func: this.concatenateNumbers },
+      { id: 'eight', keyVal: 8, type: 'number', func: this.concatenateNumbers },
+      { id: 'nine', keyVal: 9, type: 'number', func: this.concatenateNumbers },
+      { id: 'decimal', keyVal: '.', type: 'number', func: this.concatenateNumbers },
+      { id: 'clear', keyVal: 'AC', type: 'operator', func: this.clearDisplay },
       { id: 'divide', keyVal: '/', type: 'operator', func: '' },
       { id: 'multiply', keyVal: 'x', type: 'operator', func: '' },
       { id: 'subtract', keyVal: '-', type: 'operator', func: '' },
@@ -58,13 +65,26 @@ class JSCalculator extends React.Component {
       { id: 'equals', keyVal: '=', type: 'operator', func: '' },
     ]
   }
-  updateDisplayValue(val) {
+  updateDisplayValue(val, func) {
     this.setState({
       displayValue: val,
     })
   }
   handleChange(event) {}
 
+  concatenateNumbers(val){
+    this.setState((prevState) => ({
+      overall: '',
+      displayValue: `${prevState.displayValue}${val}`
+    }))
+  }
+
+  clearDisplay(){
+    this.setState({
+      overall: '',
+      displayValue: 0
+    })
+  }
   componentDidUpdate(prevProps, prevState) {}
 
   render() {
