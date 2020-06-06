@@ -1,3 +1,33 @@
-body{
-  background: 'blue';
+#js-calculator{
+  height: 80vh;
+  width: 900px;
+  margin-right: auto;
+  margin-left: auto;
 }
+#grid-container{
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  }
+
+  #one { grid-area: 6 / 4 / 7 / 5; }
+  #two { grid-area: 6 / 5 / 7 / 6; }
+  #three { grid-area: 6 / 6 / 7 / 7; }
+  #four { grid-area: 5 / 4 / 6 / 5; }
+  #five { grid-area: 5 / 5 / 6 / 6; }
+  #six { grid-area: 5 / 6 / 6 / 7; }
+  #seven { grid-area: 4 / 4 / 5 / 5; }
+  #eight { grid-area: 4 / 5 / 5 / 6; }
+  #nine { grid-area: 4 / 6 / 5 / 7; }
+  #zero { grid-area: 7 / 4 / 8 / 6; }
+  #decimal { grid-area: 7 / 6 / 8 / 7; }
+  #clear { grid-area: 3 / 4 / 4 / 6; }
+  #divide { grid-area: 3 / 6 / 4 / 7; }
+  #multiply { grid-area: 3 / 7 / 4 / 8; }
+  #subtract { grid-area: 4 / 7 / 5 / 8; }
+  #add { grid-area: 5 / 7 / 6 / 8; }
+  #equals { grid-area: 6 / 7 / 8 / 8; }
+  #display { grid-area: 2 / 4 / 3 / 8; }

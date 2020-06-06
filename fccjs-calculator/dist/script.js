@@ -1,27 +1,93 @@
-// !! IMPORTANT README:
+//To display description of the most recent sound byte that was clicked
+const Display = (props) => {
+  return <h2 id='display'>Display: {props.displayValue
+  }</h2>
+}
 
-// You may add additional external JS and CSS as needed to complete the project, however the current external resource MUST remain in place for the tests to work. BABEL must also be left in place. 
+class CalcButton extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
 
-/***********
-INSTRUCTIONS:
-  - Select the project you would 
-    like to complete from the dropdown 
-    menu.
-  - Click the "RUN TESTS" button to
-    run the tests against the blank 
-    pen.
-  - Click the "TESTS" button to see 
-    the individual test cases. 
-    (should all be failing at first)
-  - Start coding! As you fulfill each
-    test case, you will see them go   
-    from red to green.
-  - As you start to build out your 
-    project, when tests are failing, 
-    you should get helpful errors 
-    along the way!
-    ************/
+  }
 
-// PLEASE NOTE: Adding global style rules using the * selector, or by adding rules to body {..} or html {..}, or to all elements within body or html, i.e. h1 {..}, has the potential to pollute the test suite's CSS. Try adding: * { color: red }, for a quick example!
+  handleChange(event) {}
 
-// Once you have read the above messages, you can delete all comments.
+  componentDidMount(prevProps, prevState) {
+
+  }
+
+  render() {
+    return (
+      <button
+        ref={(c) => (this.calcButton = c)}
+        className={this.props.number.type}
+        id={`${this.props.number.id}`}
+      >
+        {this.props.number.keyVal}
+      </button>
+    )
+  }
+}
+
+class JSCalculator extends React.Component {
+  constructor(props) {
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
+    this.updateCurrentSound = this.updateCurrentSound.bind(this)
+    this.state = {
+      displayValue: ' ',
+    }
+
+    this.buildNumAndOpsArray = [
+      {id: 'zero', keyVal: 0, type: 'number', func: ''},
+      {id: 'one', keyVal: 1, type: 'number', func: ''},
+      {id: 'two', keyVal: 2, type: 'number', func: ''},
+      {id: 'three', keyVal: 3, type: 'number', func: ''},
+      {id: 'four', keyVal: 4, type: 'number', func: ''},
+      {id: 'five', keyVal: 5, type: 'number', func: ''},
+      {id: 'six', keyVal: 6, type: 'number', func: ''},
+      {id: 'seven', keyVal: 7, type: 'number', func: ''},
+      {id: 'eight', keyVal: 8, type: 'number', func: ''},
+      {id: 'nine', keyVal: 9, type: 'number', func: ''},
+      {id: 'decimal', keyVal: '.', type: 'number', func: ''},
+      {id: 'clear', keyVal: 'AC', type: 'operator', func: ''},
+      {id: 'divide', keyVal: '/', type: 'operator', func: ''},
+      {id: 'multiply', keyVal: 'x', type: 'operator', func: ''},
+      {id: 'subtract', keyVal: '-', type: 'operator', func: ''},
+      {id: 'add', keyVal: '+', type: 'operator', func: ''},
+      {id: 'equals', keyVal: '=', type: 'operator', func: ''
+    }
+    ]
+  }
+  updateCurrentSound(val) {
+    this.setState({
+      currentSound: val,
+    })
+  }
+  handleChange(event) {}
+
+  componentDidUpdate(prevProps, prevState) {}
+
+  render() {
+    return (
+      <span>
+        {/* <h1 id='main-title'>Javascript Calculator</h1> */}
+        <span id='grid-container'>
+        <Display displayValue={this.state.displayValue} />
+        {this.buildNumAndOpsArray.map((number) => (
+          <CalcButton
+            number={number}
+            key={number.id}
+          />
+        ))}
+        </span>
+      </span>
+    )
+  }
+}
+
+ReactDOM.render(
+  <JSCalculator />,
+  document.getElementById('js-calculator')
+)
