@@ -3,7 +3,10 @@
 //To display description of the most recent sound byte that was clicked
 
 const Display = (props) => {
-  return <h2 id='display'>{props.displayValue}</h2>
+  return <div id='display-container'>
+    <h4>{props.overall}test</h4>
+    <h2 id='display'>{props.displayValue}</h2>
+    </div>
 }
 
 class CalcButton extends React.Component {
@@ -13,7 +16,7 @@ class CalcButton extends React.Component {
   }
 
   handleClick(event) {
-    this.props.number.func(this.props.number.keyVal);
+    this.props.number.func(this.props.number.keyVal)
     //this.props.updateDisplayValue(this.props.number.keyVal, this.props.number.func)
   }
 
@@ -38,12 +41,13 @@ class JSCalculator extends React.Component {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.updateDisplayValue = this.updateDisplayValue.bind(this)
-    this.concatenateNumbers = this.concatenateNumbers.bind(this);
-    this.clearDisplay = this.clearDisplay.bind(this);
+    this.updateOverall = this.updateOverall.bind(this)
+    this.concatenateNumbers = this.concatenateNumbers.bind(this)
+    this.clearDisplay = this.clearDisplay.bind(this)
     this.state = {
       overall: '',
-      displayValue: '',
-      hasDecimal: false
+      displayValue: '0',
+      hasDecimal: false,
     }
 
     this.buildNumAndOpsArray = [
@@ -57,13 +61,43 @@ class JSCalculator extends React.Component {
       { id: 'seven', keyVal: 7, type: 'number', func: this.concatenateNumbers },
       { id: 'eight', keyVal: 8, type: 'number', func: this.concatenateNumbers },
       { id: 'nine', keyVal: 9, type: 'number', func: this.concatenateNumbers },
-      { id: 'decimal', keyVal: '.', type: 'number', func: this.concatenateNumbers },
+      {
+        id: 'decimal',
+        keyVal: '.',
+        type: 'number',
+        func: this.concatenateNumbers,
+      },
       { id: 'clear', keyVal: 'AC', type: 'operator', func: this.clearDisplay },
-      { id: 'divide', keyVal: '/', type: 'operator', func: this.updateDisplayValue },
-      { id: 'multiply', keyVal: 'x', type: 'operator', func: this.updateDisplayValue },
-      { id: 'subtract', keyVal: '-', type: 'operator', func: this.updateDisplayValue },
-      { id: 'add', keyVal: '+', type: 'operator', func: this.updateDisplayValue },
-      { id: 'equals', keyVal: '=', type: 'operator', func: this.updateDisplayValue },
+      {
+        id: 'divide',
+        keyVal: '/',
+        type: 'operator',
+        func: this.updateDisplayValue,
+      },
+      {
+        id: 'multiply',
+        keyVal: 'x',
+        type: 'operator',
+        func: this.updateDisplayValue,
+      },
+      {
+        id: 'subtract',
+        keyVal: '-',
+        type: 'operator',
+        func: this.updateDisplayValue,
+      },
+      {
+        id: 'add',
+        keyVal: '+',
+        type: 'operator',
+        func: this.updateDisplayValue,
+      },
+      {
+        id: 'equals',
+        keyVal: '=',
+        type: 'operator',
+        func: this.updateDisplayValue,
+      },
     ]
   }
   updateDisplayValue(val, func) {
@@ -71,39 +105,41 @@ class JSCalculator extends React.Component {
       displayValue: val,
     })
   }
+  updateOverall(val){
+    this.setState(prevState =>({
+      displayValue: `${prevState.displayValue} +${val}`
+    }))
+  }
   handleChange(event) {}
 
-  concatenateNumbers(val){
+  concatenateNumbers(val) {
     this.setState((prevState) => ({
       overall: '',
-      displayValue: helperConcatenateNumbers(prevState, val)
+      displayValue: helperConcatenateNumbers(prevState, val),
     }))
     let helperConcatenateNumbers = (prevState) => {
-
       //if the state already has a decimal, do no alterations and return original value
-      if(this.state.hasDecimal && val === '.') return this.state.displayValue;
+      if (this.state.hasDecimal && val === '.') return this.state.displayValue
 
       //if the current value is a decimal, update hasDecimal to true to prevent additional decimals
       //Prevent multiple 0s from being inserted at beginning of string if previous value is already 0  given that current value isn't a decimal.
-      if(prevState.displayValue == '0' && val != '.') return val
+      if (prevState.displayValue == '0' && val != '.') return val
       // if(val != '.' && prevState.displayValue.toString().slice(-1) != '.' )
       // return `${prevState.displayValue}${val}`
       //safe to concatenate otherwise
       else {
         return `${prevState.displayValue}${val}`
       }
-
     }
 
-    if(val === '.') this.setState({hasDecimal: true})
-
+    if (val === '.') this.setState({ hasDecimal: true })
   }
 
-  clearDisplay(val){
+  clearDisplay(val) {
     this.setState({
       overall: '',
       displayValue: 0,
-      hasDecimal: false
+      hasDecimal: false,
     })
   }
 
@@ -114,9 +150,13 @@ class JSCalculator extends React.Component {
       <span>
         {/* <h1 id='main-title'>Javascript Calculator</h1> */}
         <div id='grid-container'>
-          <Display displayValue={this.state.displayValue} />
+          <Display displayValue={this.state.displayValue} overall={this.state.overall} />
           {this.buildNumAndOpsArray.map((number) => (
-            <CalcButton number={number} key={number.id} updateDisplayValue={this.updateDisplayValue} />
+            <CalcButton
+              number={number}
+              key={number.id}
+              updateDisplayValue={this.updateDisplayValue}
+            />
           ))}
         </div>
       </span>
