@@ -2,13 +2,19 @@
 /* eslint-disable react/react-in-jsx-scope */
 //To display description of the most recent sound byte that was clicked
 
+/**
+ * Displays entered value. Upper right displays running total of values entered. While value on bottom left display what is currently being entered.
+ */
 const Display = (props) => {
   return <div id='display-container'>
-    <h4>{props.overall}test</h4>
+    <h4>{props.overall}</h4>
     <h2 id='display'>{props.displayValue}</h2>
     </div>
 }
 
+/**
+ * Defines and sets up each calculator button
+ */
 class CalcButton extends React.Component {
   constructor(props) {
     super(props)
@@ -16,7 +22,7 @@ class CalcButton extends React.Component {
   }
 
   handleClick(event) {
-    this.props.number.func(this.props.number.keyVal)
+    this.props.selection.func(this.props.selection.keyVal)
     //this.props.updateDisplayValue(this.props.number.keyVal, this.props.number.func)
   }
 
@@ -26,11 +32,11 @@ class CalcButton extends React.Component {
     return (
       <button
         ref={(c) => (this.calcButton = c)}
-        className={this.props.number.type}
-        id={`${this.props.number.id}`}
+        className={this.props.selection.type}
+        id={`${this.props.selection.id}`}
         onClick={this.handleClick}
       >
-        {this.props.number.keyVal}
+        {this.props.selection.keyVal}
       </button>
     )
   }
@@ -41,8 +47,9 @@ class JSCalculator extends React.Component {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.updateDisplayValue = this.updateDisplayValue.bind(this)
-    this.updateOverall = this.updateOverall.bind(this)
+    // this.updateOverall = this.updateOverall.bind(this)
     this.concatenateNumbers = this.concatenateNumbers.bind(this)
+    this.addOperation = this.addOperation.bind(this);
     this.clearDisplay = this.clearDisplay.bind(this)
     this.state = {
       overall: '',
@@ -72,25 +79,25 @@ class JSCalculator extends React.Component {
         id: 'divide',
         keyVal: '/',
         type: 'operator',
-        func: this.updateDisplayValue,
+        func: this.addOperation,
       },
       {
         id: 'multiply',
-        keyVal: 'x',
+        keyVal: '*',
         type: 'operator',
-        func: this.updateDisplayValue,
+        func: this.addOperation,
       },
       {
         id: 'subtract',
         keyVal: '-',
         type: 'operator',
-        func: this.updateDisplayValue,
+        func: this.addOperation,
       },
       {
         id: 'add',
         keyVal: '+',
         type: 'operator',
-        func: this.updateDisplayValue,
+        func: this.addOperation,
       },
       {
         id: 'equals',
@@ -105,23 +112,27 @@ class JSCalculator extends React.Component {
       displayValue: val,
     })
   }
-  updateOverall(val){
+  // updateOverall(val){
+
+  // }
+
+  addOperation(operator){
     this.setState(prevState =>({
-      displayValue: `${prevState.displayValue} +${val}`
+      displayValue: operator,
+      overall: `${prevState.overall}${prevState.displayValue} ${operator}`
     }))
   }
   handleChange(event) {}
 
   concatenateNumbers(val) {
     this.setState((prevState) => ({
-      overall: '',
       displayValue: helperConcatenateNumbers(prevState, val),
     }))
     let helperConcatenateNumbers = (prevState) => {
-      //if the state already has a decimal, do no alterations and return original value
+      //If the state already has a decimal, do no alterations and return original value
       if (this.state.hasDecimal && val === '.') return this.state.displayValue
 
-      //if the current value is a decimal, update hasDecimal to true to prevent additional decimals
+      //If the current value is a decimal, update hasDecimal to true to prevent additional decimals
       //Prevent multiple 0s from being inserted at beginning of string if previous value is already 0  given that current value isn't a decimal.
       if (prevState.displayValue == '0' && val != '.') return val
       // if(val != '.' && prevState.displayValue.toString().slice(-1) != '.' )
@@ -133,6 +144,8 @@ class JSCalculator extends React.Component {
     }
 
     if (val === '.') this.setState({ hasDecimal: true })
+
+
   }
 
   clearDisplay(val) {
@@ -151,10 +164,10 @@ class JSCalculator extends React.Component {
         {/* <h1 id='main-title'>Javascript Calculator</h1> */}
         <div id='grid-container'>
           <Display displayValue={this.state.displayValue} overall={this.state.overall} />
-          {this.buildNumAndOpsArray.map((number) => (
+          {this.buildNumAndOpsArray.map((selection) => (
             <CalcButton
-              number={number}
-              key={number.id}
+              selection={selection}
+              key={selection.id}
               updateDisplayValue={this.updateDisplayValue}
             />
           ))}
