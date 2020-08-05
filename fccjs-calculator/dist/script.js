@@ -8,6 +8,9 @@
 const Display = (props) => {
   return <div id='display-container'>
     <h4>{props.overall}</h4>
+    <h3>{props.currentValue}</h3>
+    <h3>{props.currentOperator}</h3>
+    <h3>{console.log(props.inputArray, "ARRAY")}</h3>
     <h2 id='display'>{props.displayValue}</h2>
     </div>
 }
@@ -22,7 +25,7 @@ class CalcButton extends React.Component {
   }
 
   handleClick(event) {
-    this.props.selection.func(this.props.selection.keyVal)
+    this.props.selection.func(this.props.selection.keyVal, this.props.selection.type)
     //this.props.updateDisplayValue(this.props.number.keyVal, this.props.number.func)
   }
 
@@ -55,6 +58,9 @@ class JSCalculator extends React.Component {
       overall: '',
       displayValue: '0',
       hasDecimal: false,
+      inputArray: [],
+      currentValue: '',
+      currentOperator: ''
     }
 
     this.buildNumAndOpsArray = [
@@ -109,40 +115,78 @@ class JSCalculator extends React.Component {
   }
   updateDisplayValue(val, func) {
     this.setState({
-      displayValue: val,
+      displayValue: val
     })
   }
   // updateOverall(val){
 
   // }
 
-  addOperation(operator){
-    this.setState(prevState =>({
+  addOperation(operator, type){
+
+    //Prevents operator from being added at beginning unless a '-'
+    if(this.state.overall === '' && operator !== '-') return;
+
+
+
+    let currentValue = Number(this.state.displayValue, 10);
+    console.log(currentValue, "CHECK")
+    //Get last value of inputArray if it exists
+    // let lastInput = this.state.inputArray.length ? this.state.inputArray[this.state.inputArray.length-1]: ;
+    console.log(currentValue, "CURRENT")
+
+    //If current display value is a negative, allow a negative to be entered again
+    if(this.state.displayValue === '-' && this.state.inputArray && this.state.inputArray[this.state.inputArray.length-1])
+    //replace operator if additional added
+    if (!currentValue){
+      this.setState(prevState => ({
+        displayValue: operator,
+        currentOperator: operator,
+        currentValue: currentValue,
+        inputArray: [...prevState.inputArray.slice(0, -1), operator],
+        overall: prevState.overall.slice(0, -1) + operator
+      }))
+    }
+
+    if (currentValue)
+    this.setState(prevState => ({
       displayValue: operator,
-      overall: `${prevState.overall}${prevState.displayValue} ${operator}`
+      currentOperator: operator,
+      currentValue: currentValue,
+      hasDecimal: false,
+      inputArray: [...prevState.inputArray, currentValue, operator],
+      overall: typeof Number(prevState.displayValue) !== 'number' ? `${prevState.overall}${prevState.displayValue}${operator}` : `${prevState.overall}${prevState.displayValue}${operator}`
     }))
   }
+
   handleChange(event) {}
 
   concatenateNumbers(val) {
+
+    if (!Number(this.state.displayValue))
+    this.setState({
+      displayValue: '',
+    })
+
+
     this.setState((prevState) => ({
       displayValue: helperConcatenateNumbers(prevState, val),
     }))
+
     let helperConcatenateNumbers = (prevState) => {
-      //If the state already has a decimal, do no alterations and return original value
+
+      //If already has a decimal, return original value
       if (this.state.hasDecimal && val === '.') return this.state.displayValue
 
-      //If the current value is a decimal, update hasDecimal to true to prevent additional decimals
-      //Prevent multiple 0s from being inserted at beginning of string if previous value is already 0  given that current value isn't a decimal.
-      if (prevState.displayValue == '0' && val != '.') return val
-      // if(val != '.' && prevState.displayValue.toString().slice(-1) != '.' )
-      // return `${prevState.displayValue}${val}`
-      //safe to concatenate otherwise
-      else {
-        return `${prevState.displayValue}${val}`
-      }
-    }
 
+      //Prevent multiple 0s from being inserted at beginning if current value isn't a decimal.
+      if (prevState.displayValue == '0' && val != '.')
+        return val
+      else
+        return `${prevState.displayValue}${val}`
+
+    }
+    //If the current value is a decimal, update hasDecimal to true to prevent additional decimals
     if (val === '.') this.setState({ hasDecimal: true })
 
 
@@ -163,7 +207,7 @@ class JSCalculator extends React.Component {
       <span>
         {/* <h1 id='main-title'>Javascript Calculator</h1> */}
         <div id='grid-container'>
-          <Display displayValue={this.state.displayValue} overall={this.state.overall} />
+          <Display displayValue={this.state.displayValue} overall={this.state.overall} currentValue={this.state.currentValue} currentOperator={this.state.currentOperator} inputArray={this.state.inputArray} />
           {this.buildNumAndOpsArray.map((selection) => (
             <CalcButton
               selection={selection}
