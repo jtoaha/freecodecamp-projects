@@ -54,9 +54,12 @@ class JSCalculator extends React.Component {
     this.concatenateNumbers = this.concatenateNumbers.bind(this)
     this.addOperation = this.addOperation.bind(this);
     this.clearDisplay = this.clearDisplay.bind(this)
+    this.calculateValue = this.calculateValue.bind(this)
+    this.isOperator = this.isOperator.bind(this);
+    this.addNumber = this.addNumber.bind(this);
     this.state = {
       overall: '',
-      displayValue: '0',
+      displayValue: '',
       hasDecimal: false,
       inputArray: [],
       currentValue: '',
@@ -109,7 +112,7 @@ class JSCalculator extends React.Component {
         id: 'equals',
         keyVal: '=',
         type: 'operator',
-        func: this.updateDisplayValue,
+        func: this.calculateValue
       },
     ]
   }
@@ -127,26 +130,37 @@ class JSCalculator extends React.Component {
     let lastInput = this.state.inputArray.length ? this.state.inputArray[this.state.inputArray.length-1]: null;
 
     //Initially this would be the operator, however if user enters additional numbers, this will save currentValue
-    let currentValue = Number(this.state.displayValue, 10);
+    let currentValue = Number(this.state.displayValue);
 
     //Prevents operator from being added at beginning unless a '-' or displayValue is empty
     if(this.state.displayValue === '' && operator !== '-') return;
+
+    //allows - operator to be added at beginning without a 0 being added to inutArray
+    if(this.state.displayValue === '' && operator === '-') {
+      this.setState(prevState => ({
+        displayValue: operator,
+        inputArray: [ operator],
+        overall: operator
+      }))
+      return;
+    }
 
 
     //Prevents initial operator from being changed to a non '-' operator by checking last input value and checking if entered value is not a number
     if (this.state.inputArray.length === 1 && lastInput === '-' && !currentValue) return;
 
+    if (this.state.inputArray.length === 0 && operator === '-' && !currentValue) return;
     //If current display value is a negative, allow a negative to be entered again
     // if(operator === '-' && lastInput === '-' && currentValue === '-')
 
     //If user enters an operator, replace operator if additional added. However if - allow for a second addition
-    if (!currentValue){
+    if (currentValue !== 0 && !currentValue ){
 
       if( operator === '-' && this.state.numNegatives < 1) {
         this.setState(prevState => ({
           displayValue: operator,
           numNegatives: prevState.numNegatives + 1,
-          inputArray: [...prevState.inputArray, operator],
+          inputArray: prevState.inputArray.length > 0? [...prevState.inputArray, operator]:[ operator],
           overall: prevState.overall + operator
         }))
       } else if ( !this.state.overall|| (this.state.inputArray.length > 1 && Number(this.state.inputArray [this.state.inputArray.length -2])))
@@ -161,7 +175,12 @@ class JSCalculator extends React.Component {
    }
 
    //If a number is entered by user, add number to array and to overall display
-    if (currentValue)
+    if (currentValue !== '-' && (currentValue || currentValue === 0))
+      this.addNumber(currentValue, operator)
+
+  }
+  //Adds number to input array
+  addNumber(currentValue, operator) {
     this.setState(prevState => ({
       displayValue: operator,
       hasDecimal: false,
@@ -175,7 +194,7 @@ class JSCalculator extends React.Component {
 
   concatenateNumbers(val) {
 
-    if (!Number(this.state.displayValue))
+    if (this.isOperator(this.state.displayValue))
     this.setState({
       displayValue: '',
     })
@@ -190,14 +209,18 @@ class JSCalculator extends React.Component {
       //If already has a decimal, return original value
       if (this.state.hasDecimal && val === '.') return this.state.displayValue
 
+      //Prevent multiple 0s from being inserted at beginning
+      if (prevState.displayValue === '0' && val === 0) return prevState.displayValue;
 
-      //Prevent multiple 0s from being inserted at beginning if current value isn't a decimal.
-      if (prevState.displayValue == '0' && val != '.')
+      //Replaces 0 at beginning with values
+      if (prevState.displayValue === '0' && val !== '.')
         return val
       else
         return `${prevState.displayValue}${val}`
 
+
     }
+
     //If the current value is a decimal, update hasDecimal to true to prevent additional decimals
     if (val === '.') this.setState({ hasDecimal: true })
 
@@ -207,6 +230,63 @@ class JSCalculator extends React.Component {
   isOperator(val) {
     let bank = '!/+*-'
     return bank.indexOf(val) === -1 ? false : true;
+  }
+
+
+  calculateValue(){
+    let string = ''
+    this.state.inputArray.map(elem=> string+=elem)
+
+    // let result= () => Function('use strict; return ('+string+ ')')
+    // console.log(result(), 'YOOO')
+    // let operations = {
+    //   '-' : (x,y) => x - y,
+    //   '+' : (x,y) => x + y,
+    //   '*' : (x,y) => x * y,
+    //   '/':  (x,y) => x / y,
+    // }
+    //If display value is a number, add number to input array
+    let currentValue = Number(this.state.displayValue);
+    if(Number(currentValue)) {
+        this.addNumber(currentValue, '=')
+    }
+
+    //First take care of multiplication and devision
+    //Second addition and subtraction
+    let reducedArray = []
+    let input = this.state.inputArray;
+
+    //combines - sign with first element
+    if (input[0] === '-' && input.length >1) {
+      input[1] *= -1
+      input = input.slice(1)
+    }
+
+    //Take out any operator at the end
+    let flag = 0;
+    for(let i = input.length-1; i>=0; i--) {
+      if(flag >= 2) break;
+
+        if(isOperator(input[i])) {
+          input.pop();
+          i--; //take into account changing length
+        }
+        flag++
+    }
+
+
+    for (let i=0; i < input.length; i++){
+      let toAdd;
+
+      if (typeof input[i] === 'number' && (input[i+1] === '*' || input[i+1] === '*')) continue;
+
+
+        reducedArray.push(toAdd)
+    }
+      console.log(reducedArray)
+
+
+
   }
 
   clearDisplay(val) {
