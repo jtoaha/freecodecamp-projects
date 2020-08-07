@@ -7,7 +7,7 @@
  */
 const Display = (props) => {
   return <div id='display-container'>
-    <h4>{props.overall}</h4>
+    <h4>{props.inputArray.reduce((a,b)=> `${a}`+ `${b}`, '')}</h4>
     <h3>{props.currentValue}</h3>
     <h3>{props.currentOperator}</h3>
     <h3>{console.log(props.inputArray, "ARRAY")}</h3>
@@ -58,12 +58,9 @@ class JSCalculator extends React.Component {
     this.isOperator = this.isOperator.bind(this);
     this.addNumber = this.addNumber.bind(this);
     this.state = {
-      overall: '',
       displayValue: '',
       hasDecimal: false,
       inputArray: [],
-      currentValue: '',
-      currentOperator: ''
     }
 
     this.buildNumAndOpsArray = [
@@ -137,7 +134,6 @@ class JSCalculator extends React.Component {
       this.setState(prevState => ({
         displayValue: operator,
         inputArray: [ operator],
-        overall: operator
       }))
       return;
     }
@@ -158,14 +154,12 @@ class JSCalculator extends React.Component {
           displayValue: operator,
           numNegatives: prevState.numNegatives + 1,
           inputArray: prevState.inputArray.length > 0? [...prevState.inputArray, operator]:[ operator],
-          overall: prevState.overall + operator
         }))
-      } else if ( !this.state.overall|| (this.state.inputArray.length > 1 && Number(this.state.inputArray [this.state.inputArray.length -2])))
+      } else if ( !this.state.inputArray|| (this.state.inputArray.length > 1 && Number(this.state.inputArray [this.state.inputArray.length -2])))
       this.setState(prevState => ({
         displayValue: operator,
         currentOperator: operator,
-        inputArray: [...prevState.inputArray.slice(0, -1), operator],
-        overall: prevState.overall.slice(0, -1) + operator
+        inputArray: [...prevState.inputArray.slice(0, -1), operator]
       }))
 
 
@@ -183,8 +177,7 @@ class JSCalculator extends React.Component {
       displayValue: operator,
       hasDecimal: false,
       numNegatives: 0,
-      inputArray: [...prevState.inputArray, currentValue, operator],
-      overall: typeof Number(prevState.displayValue) !== 'number' ? `${prevState.overall}${prevState.displayValue}${operator}` : `${prevState.overall}${prevState.displayValue}${operator}`
+      inputArray: [...prevState.inputArray, currentValue, operator]
     }))
   }
 
@@ -248,8 +241,7 @@ class JSCalculator extends React.Component {
       this.setState(prevState => ({
         displayValue: val,
         hasDecimal: false,
-        inputArray: [...prevState.inputArray, Number(currentValue)],
-        overall: `${prevState.overall}${prevState.displayValue}`
+        inputArray: [...prevState.inputArray, Number(currentValue)]
       }))
 
        input = [...this.state.inputArray, Number(currentValue)];
@@ -329,7 +321,6 @@ class JSCalculator extends React.Component {
         console.log(cumulative, "COM")
 
       this.setState({
-        overall: cumulative,
         displayValue: cumulative,
         inputArray: []
       })
@@ -337,7 +328,6 @@ class JSCalculator extends React.Component {
 
   clearDisplay(val) {
     this.setState({
-      overall: '',
       displayValue: '0',
       inputArray: [],
       hasDecimal: false,
@@ -351,7 +341,7 @@ class JSCalculator extends React.Component {
       <span>
         {/* <h1 id='main-title'>Javascript Calculator</h1> */}
         <div id='grid-container'>
-          <Display displayValue={this.state.displayValue} overall={this.state.overall} currentValue={this.state.currentValue} currentOperator={this.state.currentOperator} inputArray={this.state.inputArray} />
+          <Display displayValue={this.state.displayValue} currentValue={this.state.currentValue} currentOperator={this.state.currentOperator} inputArray={this.state.inputArray} />
           {this.buildNumAndOpsArray.map((selection) => (
             <CalcButton
               selection={selection}
