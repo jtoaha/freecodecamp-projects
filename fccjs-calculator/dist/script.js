@@ -235,12 +235,12 @@ class JSCalculator extends React.Component {
 
     // let result= () => Function('use strict; return ('+string+ ')')
     // console.log(result(), 'YOOO')
-    // let operations = {
-    //   '-' : (x,y) => x - y,
-    //   '+' : (x,y) => x + y,
-    //   '*' : (x,y) => x * y,
-    //   '/':  (x,y) => x / y,
-    // }
+    let operations = {
+      '-' : (x,y) => x - y,
+      '+' : (x,y) => x + y,
+      '*' : (x,y) => x * y,
+      '/':  (x,y) => x / y,
+    }
     //If equal is entered when display value is a number, add number to input array
     let input;
     let currentValue = this.state.displayValue;
@@ -291,15 +291,38 @@ class JSCalculator extends React.Component {
 
     }
     console.log(reduceNegative, "negative")
-    // for (let i=0; i < input.length; i++){
-    //   let toAdd;
+    //For multiplication and division, move along 2 at a time
+    let reducedMD = []
+    let current;
+    for (let i=0; i < input.length; i++){
+      let toAdd;
 
-    //   if (typeof input[i] === 'number' && (input[i+1] === '*' || input[i+1] === '*')) continue;
+      // if (typeof input[i] === 'number' && (input[i+1] === '*' || input[i+1] === '/')) continue;
+
+      if(i+2 <input.length) {
+        if(input[i+1]=== '*' || input[i+1]=== '/') {
+            current = current ? current : [input[i]]
+            //reducedMD.push(current*input[i+2])
+            current = operations[input[i+1]](current, input[i+2]);
+
+        } else {
+            if (current)
+                reducedMD.push(current, input[i+1]);
+            else
+              reducedMD.push(input[i], input[i+1]);
+
+            current = null;
+            //if last element
+            if(i+2===input.length-1) reducedMD.push(input[i+2]);
 
 
-    //     reducedArray.push(toAdd)
-    // }
-      //console.log(reducedArray)
+        }
+
+        i++
+      }
+    }
+      if (current) reducedMD.push(current)
+      console.log(reducedMD, "REDUCED")
 
 
 
