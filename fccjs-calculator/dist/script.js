@@ -294,38 +294,45 @@ class JSCalculator extends React.Component {
     //For multiplication and division, move along 2 at a time
     let reducedMD = []
     let current;
-    for (let i=0; i < input.length; i++){
-      let toAdd;
+    for (let i=0; i < reduceNegative.length; i++){
 
-      // if (typeof input[i] === 'number' && (input[i+1] === '*' || input[i+1] === '/')) continue;
-
-      if(i+2 <input.length) {
-        if(input[i+1]=== '*' || input[i+1]=== '/') {
-            current = current ? current : [input[i]]
+      if(i+2 <reduceNegative.length) {
+        if(reduceNegative[i+1]=== '*' || reduceNegative[i+1]=== '/') {
+            current = current ? current : [reduceNegative[i]]
             //reducedMD.push(current*input[i+2])
-            current = operations[input[i+1]](current, input[i+2]);
+            current = operations[reduceNegative[i+1]](current, reduceNegative[i+2]);
 
         } else {
             if (current)
-                reducedMD.push(current, input[i+1]);
+                reducedMD.push(current, reduceNegative[i+1]);
             else
-              reducedMD.push(input[i], input[i+1]);
+              reducedMD.push(input[i], reduceNegative[i+1]);
 
             current = null;
             //if last element
-            if(i+2===input.length-1) reducedMD.push(input[i+2]);
+            if(i+2===reduceNegative.length-1) reducedMD.push(reduceNegative[i+2]);
 
 
         }
-
         i++
       }
     }
       if (current) reducedMD.push(current)
       console.log(reducedMD, "REDUCED")
 
+      let cumulative = reducedMD[0];
+      for (let i = 1; i <reducedMD.length; i++) {
+        if(i+1<reducedMD.length)
+        cumulative = operations[reducedMD[i]](cumulative, reducedMD[++i])
 
+      }
+        console.log(cumulative, "COM")
 
+      this.setState({
+        overall: cumulative,
+        displayValue: cumulative,
+        inputArray: []
+      })
   }
 
   clearDisplay(val) {
