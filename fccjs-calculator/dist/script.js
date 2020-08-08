@@ -270,6 +270,9 @@ class JSCalculator extends React.Component {
       for (let i = input.length - 1; i >= 0; i--) {
         if (flag < 2 && this.isOperator(input[i])) {
           input.pop()
+          this.setState(prevState=>({
+            inputArray: prevState.inputArray.slice(0, -1)
+          }))
         }
         flag++
       }
