@@ -1,16 +1,14 @@
 /**
  * @author: Jamila Toaha
- * Javascript Calculator built using React.js (HTML/ JS / CSS)
+ * Javascript Calculator built using React.js (HTML/ JS / CSS). Calculator logic and input entries implemented from scratch. Implements Formula/Expression Logic (takes into account operator precedence) rather than Immediate Execution Logic.
  */
-
 
 //Display Component: Displays entered values. Upper right displays running total of values entered. While value on bottom left display what is currently entered.
 const Display = (props) => {
   return (
     <div id='display-container'>
       <h4>{props.inputArray.reduce((a, b) => `${a}` + `${b}`, '')}</h4>
-      {/* <h3>{console.log(props.inputArray, "ARRAY")}</h3> */}
-      <h2 id='display'>{props.displayValue}</h2>
+      <h3 id='display'>{props.displayValue}</h3>
     </div>
   )
 }
@@ -82,7 +80,7 @@ class JSCalculator extends React.Component {
         type: 'number',
         func: this.concatenateNumbers,
       },
-      { id: 'clear', keyVal: 'AC', type: 'operator', func: this.clearDisplay },
+      { id: 'clear', keyVal: 'AC', type: 'clear', func: this.clearDisplay },
       {
         id: 'divide',
         keyVal: '/',
@@ -110,7 +108,7 @@ class JSCalculator extends React.Component {
       {
         id: 'equals',
         keyVal: '=',
-        type: 'operator',
+        type: 'equals',
         func: this.calculateValue,
       },
     ]
@@ -353,8 +351,9 @@ class JSCalculator extends React.Component {
   render() {
     return (
       <span>
-        {/* <h1 id='main-title'>Javascript Calculator</h1> */}
+        <h1 id='main-title'>Javascript Calculator built using React.js</h1>
         <div id='grid-container'>
+          <div id='calc-bg' />
           <Display
             displayValue={this.state.displayValue}
             currentValue={this.state.currentValue}
