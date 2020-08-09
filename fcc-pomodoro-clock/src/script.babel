@@ -1,0 +1,8 @@
+
+class Pomodoro extends React.Component {
+  constructor(props){
+    super(props)
+  }
+}
+
+ReactDOM.render(<Pomodoro />, document.getElementById('pomodoro-env'))

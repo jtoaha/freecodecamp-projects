@@ -1,0 +1,15 @@
+#pomodoro-env {
+display: grid;
+grid-template-columns: repeat(12, 1fr);
+grid-template-rows: repeat(12, 1fr);
+grid-column-gap: 0px;
+grid-row-gap: 0px;
+}
+
+#title-item { grid-area: 1 / 3 / 3 / 11; }
+#break-label { grid-area: 4 / 10 / 6 / 13; }
+#session-label { grid-area: 5 / 1 / 7 / 5; }
+#horizon-item { grid-area: 11 / 1 / 13 / 13; }
+#sun-item { grid-area: 9 / 9 / 12 / 11; }
+#timer-case { grid-area: 7 / 2 / 13 / 7; }
+#timer-label{ grid-area: 8 / 3 / 12 / 6; }
