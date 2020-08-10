@@ -16,9 +16,9 @@ background-color: turquoise;
 #break-label { grid-area: 4 / 10 / 6 / 13; }
 #session-label { grid-area: 5 / 1 / 7 / 5; }
 #horizontal-item { grid-area: 11 / 1 / 13 / 13; }
-#sun-item { grid-area: 9 / 9 / 12 / 11; }
-#timer-case-item { grid-area: 7 / 2 / 13 / 7; }
-#timer-label{ grid-area: 8 / 3 / 12 / 6; }
+#sun-item { grid-area: 9 / 3 / 12 / 5; }
+#timer-case-item { grid-area: 7 / 7 / 13 / 12; }
+#timer-label{ grid-area: 8 / 8 / 12 / 11; }
 
 #title-item{
   text-align: center;
