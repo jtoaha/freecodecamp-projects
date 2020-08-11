@@ -51,9 +51,6 @@ class CalcButton extends React.Component {
 class JSCalculator extends React.Component {
   constructor(props) {
     super(props)
-    this.handleChange = this.handleChange.bind(this)
-    this.updateDisplayValue = this.updateDisplayValue.bind(this)
-    // this.updateOverall = this.updateOverall.bind(this)
     this.concatenateNumbers = this.concatenateNumbers.bind(this)
     this.addOperation = this.addOperation.bind(this)
     this.clearDisplay = this.clearDisplay.bind(this)
@@ -116,11 +113,6 @@ class JSCalculator extends React.Component {
         func: this.calculateValue,
       },
     ]
-  }
-  updateDisplayValue(val, func) {
-    this.setState({
-      displayValue: val,
-    })
   }
 
   addOperation(operator, type) {
@@ -197,8 +189,6 @@ class JSCalculator extends React.Component {
       inputArray: [...prevState.inputArray, currentValue, operator],
     }))
   }
-
-  handleChange(event) {}
 
   concatenateNumbers(val) {
 
@@ -324,14 +314,14 @@ class JSCalculator extends React.Component {
       }
     }
     if (current) reducedMD.push(current)
-    console.log(reducedMD, 'REDUCED')
+    //console.log(reducedMD, 'REDUCED')
 
     let cumulative = reducedMD[0]
     for (let i = 1; i < reducedMD.length; i++) {
       if (i + 1 < reducedMD.length)
         cumulative = operations[reducedMD[i]](cumulative, reducedMD[++i])
     }
-    console.log(cumulative, 'COM')
+    //console.log(cumulative, 'cumulative')
 
     if (input.length === 1) {
       if (input[0] === '-') cumulative = -1
@@ -372,7 +362,6 @@ class JSCalculator extends React.Component {
             <CalcButton
               selection={selection}
               key={selection.id}
-              updateDisplayValue={this.updateDisplayValue}
             />
           ))}
         </div>
