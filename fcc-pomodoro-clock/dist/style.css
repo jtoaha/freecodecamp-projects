@@ -29,10 +29,15 @@ background-color: turquoise;
 }
 
 #sun-item {
+
   border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #timer-case-item {
   border-top-left-radius: 30% ;
   border-top-right-radius: 30% ;
 }
+
