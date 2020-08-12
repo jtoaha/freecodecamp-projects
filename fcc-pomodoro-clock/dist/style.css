@@ -36,8 +36,23 @@ background-color: turquoise;
   align-items: center;
 }
 
-#timer-case-item {
-  border-top-left-radius: 30% ;
-  border-top-right-radius: 30% ;
+#session-label {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
+#break-label {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+#timer-case-item {
+  border-top-left-radius: 20% ;
+  border-top-right-radius: 20% ;
+}
+
+#timer-label {
+  border-radius: 50%;
+  padding: 4em;
+  margin: -1.5em;
+}

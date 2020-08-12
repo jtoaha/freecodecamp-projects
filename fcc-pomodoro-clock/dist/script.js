@@ -1,3 +1,8 @@
+/*eslint-disable react/no-multi-comp */
+/**
+ * As this is a project originally meant to be displayed on CodePen, all React Components needed to be placed in a single file.
+ *
+ */
 
 //Background Items Array will be used to populate BackgroundItems components
 let backgroundItemsArray = [
@@ -41,16 +46,52 @@ class Label extends React.Component {
         return(
           <div id= {props.name} style={{backgroundColor: 'white'}}>
             <h2>{props.text}</h2>
-            <div>
+            <h3>
             <span id={name + '-decrement'} onClick={this.handleDecrement}>↓</span>
             <span id={name +'-length'}>{props.duration}</span>
             <span id={props.text.toLowerCase() + '-increment'} onClick={this.handleIncrement}>↑</span>
-            </div>
+            </h3>
           </div>
         )
       }
 }
 
+// console.log(moment('2013-02-08 09:30:26').subtract(1, 'seconds').format('mm ss'));
+
+class Timer extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      status: 'stop', // 'stop', 'play', 'pause'
+      sessionCompleted: false
+    }
+    // this.state = {
+    //   session: moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss'),
+    //   break: moment(`2020/08/12  00:${this.props.break}:00`).format('mm:ss')
+    // }
+  }
+
+  render(){
+    let timeLeft = this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss')
+    console.log(timeLeft)
+    return(
+      <div id ='timer-label' style={{backgroundColor: 'white'}}>
+        <h1>Timer</h1>
+      <h2>Session</h2>
+    <h2 id='time-left'>{timeLeft}</h2>
+      <span id='start_stop'>
+        <span id='play'>▶️</span>
+        <span id='pause'>⏸️ </span>
+      </span>
+
+      <span id='reset'>
+      🔄
+      </span>
+
+      </div>
+
+  )}
+}
 
 class Pomodoro extends React.Component {
   constructor(props) {
@@ -60,7 +101,7 @@ class Pomodoro extends React.Component {
       'session-length': 25,
       'break-length' : 5
     }
-
+    console.log(moment('2013-02-08 09:30:26').subtract(1, 'seconds').format('mm ss'));
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
 
@@ -82,14 +123,14 @@ class Pomodoro extends React.Component {
       name = name.split('-')[0] + '-length';
       console.log(name)
       this.setState(prevState => ({
-        [name] : prevState[name]+ 1 < 60 ? prevState[name]+ 1 : 59
+        [name] : prevState[name]+ 1 < 60 ? prevState[name]+ 1 : 60
       }))
   }
 
   decrement(name) {
     name = name.split('-')[0] + '-length';
     this.setState(prevState => ({
-      [name]: prevState[name] - 1 > 0 ? prevState[name] - 1: 0
+      [name]: prevState[name] - 1 > 0 ? prevState[name] - 1: 1
     }))
   }
 
@@ -115,7 +156,10 @@ class Pomodoro extends React.Component {
        )
       )
      }
-
+         <Timer
+          session={this.state["session-length"]}
+          break={this.state["break-length"]}
+          />
       </div>
     )
 
