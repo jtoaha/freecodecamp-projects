@@ -61,30 +61,105 @@ class Label extends React.Component {
 class Timer extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
-      status: 'stop', // 'stop', 'play', 'pause'
-      sessionCompleted: false
+      status: 'start', // 'start', 'pause', 'play'
+      sessionCompleted: false,
+      timer: '',
+      sessionInProgress: '',
+      breakInProgress: ''
     }
     // this.state = {
     //   session: moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss'),
     //   break: moment(`2020/08/12  00:${this.props.break}:00`).format('mm:ss')
     // }
+    this.pausePlay = this.pausePlay.bind(this)
+    this.reset = this.reset.bind(this)
+  }
+
+  pausePlay() {
+    if(this.state.status === 'start') {
+      let timerCount = 0;
+      let delay = 0;
+      let currentTime;
+      let timer = setInterval(() => {
+
+
+        if(!this.state.sessionCompleted){
+
+          if(currentTime === '00:00')
+          {
+            timerCount = 0;
+            this.setState( prevState => ({
+              sessionCompleted: !prevState.sessionCompleted
+            }))
+
+            currentTime = moment(`2020/08/12 00:${this.props.break}:00`).format('mm:ss')
+
+            $('#time-left').text(currentTime)
+
+          }
+          else {
+            currentTime= moment(`2020/08/12 00:${this.props.session}:00`).subtract(++timerCount, 'seconds').format('mm:ss')
+            $('#time-left').text(currentTime)
+          }
+
+        }
+
+        else{
+
+
+
+          currentTime= moment(`2020/08/12 00:${this.props.break}:00`).subtract(++timerCount, 'seconds').format('mm:ss')
+
+          if(currentTime === '00:00')
+          {
+            timerCount = 0;
+            clearInterval(this.state.timer)
+
+          }
+          $('#time-left').text(currentTime)
+        }
+
+      }, 300);
+      this.setState({
+        status: 'play',
+        timer: timer
+      })
+    }
+
+  }
+
+  reset(){
+    clearInterval(this.state.timer)
+    this.setState({
+      status: 'start', // 'start', 'pause', 'play'
+      sessionCompleted: false,
+      timer: ''
+    })
+    $('#time-left').text(this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss'))
+
+    this.props.reset();
   }
 
   render(){
-    let timeLeft = this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss')
-    console.log(timeLeft)
+    let timeLeft
+    if(!this.state.sessionCompleted)
+     timeLeft  = this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss')
+    else
+      timeLeft  = this.props.break === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.break}:00`).format('mm:ss')
+      console.log(timeLeft)
     return(
       <div id ='timer-label' style={{backgroundColor: 'white'}}>
         <h1>Timer</h1>
-      <h2>Session</h2>
-    <h2 id='time-left'>{timeLeft}</h2>
+    <h2>{!this.state.sessionCompleted?  'Session' : 'Break'}</h2>
+    <h2 id='time-left'>{ timeLeft }</h2>
       <span id='start_stop'>
-        <span id='play'>▶️</span>
-        <span id='pause'>⏸️ </span>
+        <span id='play' onClick={this.pausePlay} >▶️</span>
+        <span id='pause' onClick={this.pausePlay}>⏸️ </span>
       </span>
 
-      <span id='reset'>
+      <span id='reset' onClick={this.reset}>
       🔄
       </span>
 
@@ -104,6 +179,7 @@ class Pomodoro extends React.Component {
     console.log(moment('2013-02-08 09:30:26').subtract(1, 'seconds').format('mm ss'));
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
+    this.reset = this.reset.bind(this)
 
     this.labelArray = [
       {name: 'session-label',
@@ -134,6 +210,13 @@ class Pomodoro extends React.Component {
     }))
   }
 
+  reset(){
+    this.setState({
+      'session-length': 25,
+      'break-length' : 5
+    })
+  }
+
   render () {
     return (
       <div id="pomodoro">
@@ -159,6 +242,7 @@ class Pomodoro extends React.Component {
          <Timer
           session={this.state["session-length"]}
           break={this.state["break-length"]}
+          reset={this.reset}
           />
       </div>
     )
@@ -168,3 +252,4 @@ class Pomodoro extends React.Component {
   }
 
   ReactDOM.render(<Pomodoro />, document.getElementById('pomodoro-env'))
+//this.state.status === 'start' ?
