@@ -7,10 +7,6 @@ let backgroundItemsArray = [
   {name: 'timer-case-item', text: '', color: 'red'},
 ]
 
-let labelArray = [
-   {name: 'session-label', text: 'Session', duration: 25, increment: 'session-increment', decrement: 'session-decrement'},
-  {name: 'break-label', text: 'Break', duration: 5, increment: 'break-increment', decrement: 'break-decrement'}
-]
 
 
 const BackgroundItem = props => {
@@ -26,18 +22,29 @@ const BackgroundItem = props => {
 class Label extends React.Component {
       constructor(props) {
         super(props)
-        this.state = {
-          duration: this.props.duration
-        }
+        this.handleIncrement = this.handleIncrement.bind(this)
+        this.handleDecrement = this.handleDecrement.bind(this)
+
+      }
+      handleDecrement(){
+        this.props.label.decrement(this.props.name);
       }
 
-      render() {
+      handleIncrement(){
+        this.props.label.increment(this.props.name);
+      }
 
+
+      render() {
+        let props = this.props;
+        let name = this.props.name.split('-')[0]
         return(
-          <div id= {this.props.name} style={{backgroundColor: 'white'}}>
-            <h2>{this.props.text}</h2>
+          <div id= {props.name} style={{backgroundColor: 'white'}}>
+            <h2>{props.text}</h2>
             <div>
-            ↑ {this.state.duration} ↓
+            <span id={name + '-decrement'} onClick={this.handleDecrement}>↓</span>
+            <span id={name +'-length'}>{props.duration}</span>
+            <span id={props.text.toLowerCase() + '-increment'} onClick={this.handleIncrement}>↑</span>
             </div>
           </div>
         )
@@ -48,6 +55,42 @@ class Label extends React.Component {
 class Pomodoro extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      'session-length': 25,
+      'break-length' : 5
+    }
+
+    this.increment = this.increment.bind(this);
+    this.decrement = this.decrement.bind(this);
+
+    this.labelArray = [
+      {name: 'session-label',
+        text: 'Session',
+        duration: this.state["session-length"],
+        increment: this.increment,
+        decrement: this.decrement},
+      {name: 'break-label',
+        text: 'Break',
+        duration: this.state['break-length'],
+        increment: this.increment,
+        decrement: this.decrement}
+   ]
+  }
+
+  increment(name) {
+      name = name.split('-')[0] + '-length';
+      console.log(name)
+      this.setState(prevState => ({
+        [name] : prevState[name]+ 1 < 60 ? prevState[name]+ 1 : 59
+      }))
+  }
+
+  decrement(name) {
+    name = name.split('-')[0] + '-length';
+    this.setState(prevState => ({
+      [name]: prevState[name] - 1 > 0 ? prevState[name] - 1: 0
+    }))
   }
 
   render () {
@@ -61,12 +104,14 @@ class Pomodoro extends React.Component {
           color= {item.color}/>
      ))}
      {
-       labelArray.map(label => (
+       this.labelArray.map(label => (
          <Label
          key = {label.name}
          name = {label.name}
          text = {label.text}
-         duration= {label.duration}/>
+         duration= {this.state[label.name.split('-')[0] +'-length']}
+         label = {label}
+         />
        )
       )
      }
