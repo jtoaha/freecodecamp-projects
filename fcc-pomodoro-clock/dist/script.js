@@ -1,10 +1,58 @@
-/*eslint-disable react/no-multi-comp */
+/*eslint-disable react/no-multi-comp  */
+/*eslint-disable react/react-in-jsx-scope */
 /**
  * As this is a project originally meant to be displayed on CodePen, all React Components needed to be placed in a single file.
  *
  */
 
 //Background Items Array will be used to populate BackgroundItems components
+
+// Accurate_Interval.js
+// Thanks Squeege! For the elegant answer provided to this question:
+// http://stackoverflow.com/questions/8173580/setinterval-timing-slowly-drifts-away-from-staying-accurate
+// Github: https://gist.github.com/Squeegy/1d99b3cd81d610ac7351
+// Slightly modified to accept 'normal' interval/timeout format (func, time).
+
+(function() {
+  window.accurateInterval = function(fn, time) {
+    var cancel, nextAt, timeout, wrapper;
+    nextAt = new Date().getTime() + time;
+    timeout = null;
+    wrapper = function() {
+      nextAt += time;
+      timeout = setTimeout(wrapper, nextAt - new Date().getTime());
+      return fn();
+    };
+    cancel = function() {
+      return clearTimeout(timeout);
+    };
+    timeout = setTimeout(wrapper, nextAt - new Date().getTime());
+    return {
+      cancel: cancel
+    };
+  };
+}).call(this);
+
+// function useInterval(callback, delay) {
+//   const savedCallback = React.useRef();
+
+//   // Remember the latest callback.
+//   React.useEffect(() => {
+//     savedCallback.current = callback;
+//   }, [callback]);
+
+//   // Set up the interval.
+//   React.useEffect(() => {
+//     function tick() {
+//       savedCallback.current();
+//     }
+//     if (delay !== null) {
+//       let id = setInterval(tick, delay);
+//       return () => clearInterval(id);
+//     }
+//   }, [delay]);
+// }
+
 let backgroundItemsArray = [
   {name: 'title-item', text: 'Pomodoro Clock built with React.js', color: '#ffffff'},
   {name: 'sun-item', text: '⬛ - ⬛', color: 'yellow'},
@@ -63,97 +111,162 @@ class Timer extends React.Component {
     super(props)
 
     this.state = {
-      status: 'start', // 'start', 'pause', 'play'
       sessionCompleted: false,
       timer: '',
-      sessionInProgress: '',
-      breakInProgress: ''
+      current: this.props.session === '60' ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`)
     }
+
+    this.status = ''; // 'start', 'pause', 'play'
+
     // this.state = {
     //   session: moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss'),
     //   break: moment(`2020/08/12  00:${this.props.break}:00`).format('mm:ss')
     // }
     this.pausePlay = this.pausePlay.bind(this)
     this.reset = this.reset.bind(this)
+
+    // $('#time-left').text(this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss'))
   }
 
+
+    componentDidMount(){
+    // $('#time-left').text(this.state.initialTime)
+    let timerCount = 0;
+    let currentTime =  this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`)
+    let delay = 0;
+
+
+    this.timer = accurateInterval(() => {
+
+      if(this.status === 'reset') {
+        timerCount = 0;
+        currentTime =  this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`)
+        this.setState({
+          sessionCompleted: false,
+          current: currentTime
+        })
+        this.status = ''
+      }
+
+      if (this.status === 'start') {
+         timerCount = 0;
+         currentTime =  this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`)
+         delay = 0;
+        this.status = 'play'
+
+      }
+
+      if(this.status=== 'play' || this.status=== 'pause')  {
+
+        if (typeof currentTime !== 'string' && currentTime.format('mm:ss') === '00:00')
+        {
+          if(delay++<1) return
+          delay = 0;
+          timerCount = 0;
+          this.setState( prevState => ({
+            sessionCompleted: !prevState.sessionCompleted,
+          }))
+          currentTime = !this.state. sessionCompleted ? moment(`2020/08/12 00:${this.props.session}:00`) :
+          moment(`2020/08/12 00:${this.props.break}:00`)
+          console.log(typeof currentTime === 'string' ? currentTime : currentTime.format('mm:ss'))
+        }
+
+        //Will decrement either in Session mode or Break mode. If paused, will not increase timerCount, though timer itself will continue
+     if (!this.state.sessionCompleted){
+      console.log(this.status, "WHYY")
+      currentTime =  currentTime === '60:00' ?
+          moment(`2020/08/12 00:59:00`) : moment(`2020/08/12 00:${this.props.session}:00`).subtract(
+            this.status === 'pause' ?
+            timerCount : timerCount++,
+            'seconds')
+            console.log(typeof currentTime === 'string' ? currentTime : currentTime.format('mm:ss'))
+
+
+        } else{
+
+          currentTime =  currentTime === '60:00' ?
+          moment(`2020/08/12 00:59:00`) : moment(`2020/08/12 00:${this.props.break}:00`).subtract(
+            this.status === 'pause' ?
+            timerCount : timerCount++,
+            'seconds');
+
+          // if(currentTime === '00:00')
+          // {
+          //   timerCount = 0;
+          //   clearInterval(this.state.timer)
+          // }
+          console.log(typeof currentTime === 'string' ? currentTime : currentTime.format('mm:ss'))
+        }
+        this.setState({
+          // status: 'play',
+          current: currentTime
+        })
+
+      }
+
+  }, 1000);
+
+}
+
+
+componentWillUnmount(){
+  clearInterval(this.timer)
+}
+
   pausePlay() {
-    if(this.state.status === 'start') {
-      let timerCount = 0;
-      let delay = 0;
-      let currentTime;
-      let timer = setInterval(() => {
 
 
-        if(!this.state.sessionCompleted){
+    if (this.status === '') {
+      this.status = 'start'
 
-          if(currentTime === '00:00')
-          {
-            timerCount = 0;
-            this.setState( prevState => ({
-              sessionCompleted: !prevState.sessionCompleted
-            }))
-
-            currentTime = moment(`2020/08/12 00:${this.props.break}:00`).format('mm:ss')
-
-            $('#time-left').text(currentTime)
-
-          }
-          else {
-            currentTime= moment(`2020/08/12 00:${this.props.session}:00`).subtract(++timerCount, 'seconds').format('mm:ss')
-            $('#time-left').text(currentTime)
-          }
-
-        }
-
-        else{
-
-
-
-          currentTime= moment(`2020/08/12 00:${this.props.break}:00`).subtract(++timerCount, 'seconds').format('mm:ss')
-
-          if(currentTime === '00:00')
-          {
-            timerCount = 0;
-            clearInterval(this.state.timer)
-
-          }
-          $('#time-left').text(currentTime)
-        }
-
-      }, 300);
-      this.setState({
-        status: 'play',
-        timer: timer
-      })
     }
+
+    if (this.status === 'play') {
+      this.status = 'pause'
+        return;
+
+    }
+
+    if (this.status === 'pause') {
+      this.status = 'play'
+      return;
+
+    }
+
+    // if (this.status === 'start') {
+    //   let timerCount = 0;
+    //   let currentTime =  this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`)
+    //   let delay = 0;
+    // }
 
   }
 
   reset(){
-    clearInterval(this.state.timer)
-    this.setState({
-      status: 'start', // 'start', 'pause', 'play'
-      sessionCompleted: false,
-      timer: ''
-    })
-    $('#time-left').text(this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss'))
+    this.status = 'reset'; // 'start', 'pause', 'play', 'reset'
+      // sessionCompleted: false,
+      // current: this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`)
+
+    // $('#time-left').text(this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss'))
+    // clearInterval(this.timer)
 
     this.props.reset();
   }
 
   render(){
+    // let currentTime = this.state.currentTime
+
     let timeLeft
     if(!this.state.sessionCompleted)
      timeLeft  = this.props.session === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.session}:00`).format('mm:ss')
     else
       timeLeft  = this.props.break === 60 ? '60:00' : moment(`2020/08/12 00:${this.props.break}:00`).format('mm:ss')
-      console.log(timeLeft)
+
+
     return(
       <div id ='timer-label' style={{backgroundColor: 'white'}}>
         <h1>Timer</h1>
-    <h2>{!this.state.sessionCompleted?  'Session' : 'Break'}</h2>
-    <h2 id='time-left'>{ timeLeft }</h2>
+    <h2>{!this.state.sessionCompleted ?  'Session' : 'Break'}</h2>
+    <h2 id='time-left'>{this.status=== '' ? timeLeft : this.state.current === '60:00' ? this.state.current : this.state.current.format('mm:ss')}</h2>
       <span id='start_stop'>
         <span id='play' onClick={this.pausePlay} >▶️</span>
         <span id='pause' onClick={this.pausePlay}>⏸️ </span>
@@ -176,7 +289,7 @@ class Pomodoro extends React.Component {
       'session-length': 25,
       'break-length' : 5
     }
-    console.log(moment('2013-02-08 09:30:26').subtract(1, 'seconds').format('mm ss'));
+
     this.increment = this.increment.bind(this);
     this.decrement = this.decrement.bind(this);
     this.reset = this.reset.bind(this)
@@ -197,7 +310,6 @@ class Pomodoro extends React.Component {
 
   increment(name) {
       name = name.split('-')[0] + '-length';
-      console.log(name)
       this.setState(prevState => ({
         [name] : prevState[name]+ 1 < 60 ? prevState[name]+ 1 : 60
       }))
@@ -252,4 +364,3 @@ class Pomodoro extends React.Component {
   }
 
   ReactDOM.render(<Pomodoro />, document.getElementById('pomodoro-env'))
-//this.state.status === 'start' ?
