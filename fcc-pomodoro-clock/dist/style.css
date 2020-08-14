@@ -1,50 +1,64 @@
-#pomodoro-env{
+#pomodoro-env {
   height: 100vh;
   font-family: 'Futura';
-
 }
 
-#pomodoro{
-height: 100%;
-display: grid;
-grid-template-columns: repeat(12, 1fr);
-grid-template-rows: repeat(12, 1fr);
-grid-column-gap: 0px;
-grid-row-gap: 0px;
-background-color: turquoise;
+#pomodoro {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  background-color: turquoise;
 }
 
-#title-item { grid-area: 1 / 3 / 3 / 11; }
-#break-label { grid-area: 4 / 10 / 6 / 13; }
-#session-label { grid-area: 5 / 1 / 7 / 5; }
-#horizontal-item { grid-area: 11 / 1 / 13 / 13; }
-#sun-item { grid-area: 9 / 3 / 12 / 5; }
-#timer-case-item { grid-area: 7 / 7 / 13 / 12; }
-#timer-label{ grid-area: 8 / 8 / 12 / 11; }
+#title-item {
+  grid-area: 1 / 3 / 3 / 11;
+}
+#break-label {
+  grid-area: 4 / 10 / 6 / 13;
+}
+#session-label {
+  grid-area: 5 / 1 / 7 / 5;
+}
+#horizontal-item {
+  grid-area: 11 / 1 / 13 / 13;
+}
+#sun-item {
+  grid-area: 9 / 3 / 12 / 5;
+}
+#timer-case-item {
+  grid-area: 7 / 7 / 13 / 12;
+}
+#timer-label {
+  grid-area: 8 / 8 / 12 / 11;
+}
 
-#title-item{
+#title-item {
   text-align: center;
   border-radius: 20px;
   margin: auto;
   padding: 1em;
 }
 
-#title-item >p {
+#title-item > p {
   font-weight: bolder;
   font-size: 2rem;
 }
 
 #sun-item {
-
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3rem;
 }
+
 #horizontal-item {
   outline: 3px solid rgb(221, 166, 176);
 }
+
 #session-label {
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -55,7 +69,7 @@ background-color: turquoise;
   border-bottom-left-radius: 20px;
 }
 
-.arrow:hover{
+.arrow:hover {
   color: #db5656;
 }
 
@@ -66,15 +80,12 @@ background-color: turquoise;
   align-items: center;
 }
 
-h1{
-}
 #timer-case-item {
-  border-top-left-radius: 20% ;
-  border-top-right-radius: 20% ;
+  border-top-left-radius: 20%;
+  border-top-right-radius: 20%;
 }
 
 #timer-label {
-
   border-radius: 50%;
   padding: 4em;
   margin: -2em;
@@ -84,32 +95,33 @@ h1{
   align-items: center;
 }
 
-#timer-mode{
+#timer-mode {
   color: rgb(191, 95, 111);
 }
-#time-left{
+
+#time-left {
   font-size: 6rem;
   font-weight: bolder;
   font-family: 'Share Tech Mono';
 }
-#start_stop{
 
+#start_stop {
   font-size: 2rem;
   width: 50%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* align-items: center; */
 }
-#start_stop> span:hover {
-  font-size: 2.10rem;
+
+#start_stop > span:hover {
+  font-size: 2.1rem;
 }
 
 @media screen and (max-width: 500px) {
-  #sun-item{
+  #sun-item {
     font-size: 1.5rem;
   }
-  #time-left{
+  #time-left {
     font-size: 3.25rem;
   }
 }
