@@ -33,31 +33,12 @@
   };
 }).call(this);
 
-// function useInterval(callback, delay) {
-//   const savedCallback = React.useRef();
-
-//   // Remember the latest callback.
-//   React.useEffect(() => {
-//     savedCallback.current = callback;
-//   }, [callback]);
-
-//   // Set up the interval.
-//   React.useEffect(() => {
-//     function tick() {
-//       savedCallback.current();
-//     }
-//     if (delay !== null) {
-//       let id = setInterval(tick, delay);
-//       return () => clearInterval(id);
-//     }
-//   }, [delay]);
-// }
 
 let backgroundItemsArray = [
   {name: 'title-item', text: 'Pomodoro Clock built with React.js', color: '#ffffff'},
-  {name: 'sun-item', text: '⬛ - ⬛', color: 'yellow'},
+  {name: 'sun-item', text: '^_^', color: 'yellow'},
   {name: 'horizontal-item', text: '', color: 'pink'},
-  {name: 'timer-case-item', text: '', color: 'red'},
+  {name: 'timer-case-item', text: '', color: '#db5656'},
 ]
 
 
@@ -65,9 +46,9 @@ let backgroundItemsArray = [
 const BackgroundItem = props => {
   return (
     <div id={props.name} style={{backgroundColor: props.color}}>
-        <h1>
+        <p>
           {props.text}
-        </h1>
+        </p>
     </div>
   )
 }
@@ -92,13 +73,13 @@ class Label extends React.Component {
         let props = this.props;
         let name = this.props.name.split('-')[0]
         return(
-          <div id= {props.name} style={{backgroundColor: 'white'}}>
-            <h2>{props.text}</h2>
-            <h3>
-            <span id={name + '-decrement'} onClick={this.handleDecrement}>↓</span>
-            <span id={name +'-length'}>{props.duration}</span>
-            <span id={props.text.toLowerCase() + '-increment'} onClick={this.handleIncrement}>↑</span>
-            </h3>
+          <div className='label' id= {props.name} style={{backgroundColor: 'white'}}>
+            <h1>{props.text}</h1>
+            <h2>
+            <span className='arrow'id={name + '-decrement'} onClick={this.handleDecrement}>↓</span>
+            <span className='label-length' id={name +'-length'}>&#09;{props.duration}&#09;</span>
+            <span className='arrow' id={props.text.toLowerCase() + '-increment'} onClick={this.handleIncrement}>↑</span>
+            </h2>
           </div>
         )
       }
@@ -160,7 +141,14 @@ class Timer extends React.Component {
 
         if (typeof currentTime !== 'string' && currentTime.format('mm:ss') === '00:00')
         {
-          if(delay++<1) return
+
+          if(delay++<1) {
+            $('#beep')[0].play();
+            return;
+          }
+          //Beep plays for only a second
+          $('#beep')[0].pause();
+
           delay = 0;
           timerCount = 0;
           this.setState( prevState => ({
@@ -265,16 +253,15 @@ componentWillUnmount(){
     return(
       <div id ='timer-label' style={{backgroundColor: 'white'}}>
         <h1>Timer</h1>
-    <h2>{!this.state.sessionCompleted ?  'Session' : 'Break'}</h2>
+    <h2 id='timer-mode'>{!this.state.sessionCompleted ?  'Session' : 'Break'}</h2>
     <h2 id='time-left'>{this.status=== '' ? timeLeft : this.state.current === '60:00' ? this.state.current : this.state.current.format('mm:ss')}</h2>
-      <span id='start_stop'>
+      <div id='start_stop'>
         <span id='play' onClick={this.pausePlay} >▶️</span>
         <span id='pause' onClick={this.pausePlay}>⏸️ </span>
-      </span>
+        <span id='reset' onClick={this.reset}>🔄</span>
+      </div>
 
-      <span id='reset' onClick={this.reset}>
-      🔄
-      </span>
+
 
       </div>
 
@@ -356,6 +343,17 @@ class Pomodoro extends React.Component {
           break={this.state["break-length"]}
           reset={this.reset}
           />
+        {/* <audio
+          id="beep"
+          preload="auto"
+          src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+          ref={(audio) => {
+            this.audioBeep = audio;
+          }}
+        /> */}
+
+
+
       </div>
     )
 
